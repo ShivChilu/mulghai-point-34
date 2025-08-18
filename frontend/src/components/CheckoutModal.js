@@ -20,7 +20,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    if (field === 'pincode' &amp;&amp; value.length === 6) checkPincode(value);
+    if (field === 'pincode' && value.length === 6) checkPincode(value);
   };
 
   const checkPincode = (pincode) => {
