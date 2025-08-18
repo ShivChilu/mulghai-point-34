@@ -137,7 +137,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
                 <span className="text-slate-700">Subtotal:</span>
                 <span className="text-slate-900 font-semibold">₹{getCartTotal()}</span>
               </div>
-              {savings &gt; 0 &amp;&amp; (
+              {savings > 0 && (
                 <div className="flex justify-between items-center text-emerald-700">
                   <span className="flex items-center space-x-1"><Sparkles className="w-4 h-4" /><span>You saved:</span></span>
                   <span className="font-semibold">₹{savings}</span>
