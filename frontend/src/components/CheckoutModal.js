@@ -112,7 +112,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {cart.map(item =&gt; (
+                    {cart.map(item => (
                       <div key={item.id} className="flex items-center space-x-3 p-3 bg-amber-50 rounded-xl border border-amber-100">
                         <img src={item.image} alt={item.name} className="w-10 h-10 object-cover rounded-lg" />
                         <div className="flex-1">
