@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Menu, X, Home, Package, Info, Users, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -25,11 +25,23 @@ const HomePage = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [titleText, setTitleText] = useState('');
+  const searchWrapRef = useRef(null);
   const { toast } = useToast();
 
   useEffect(() => {
     const t = setTimeout(() => setShowIntro(false), 1200);
     return () => clearTimeout(t);
+  }, []);
+
+  // Click outside to close suggestions
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('click', onDocClick);
+    return () => document.removeEventListener('click', onDocClick);
   }, []);
 
   // Continuous typewriter for the main heading
@@ -130,6 +142,7 @@ const HomePage = () => {
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
     setIsMobileMenuOpen(false);
+    setShowSuggestions(false);
     const element = document.getElementById(sectionId);
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
@@ -141,15 +154,16 @@ const HomePage = () => {
   };
 
   const SearchBox = ({ mobile = false }) => (
-    <div className="relative w-full z-50">
+    <div className="relative w-full" ref={searchWrapRef}>
       <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${mobile ? 'text-amber-600/70' : 'text-amber-600/70'} w-5 h-5 z-10`} />
       <Input
         type="text"
         placeholder="Search chicken, mutton, fish..."
         value={searchQuery}
+        autoComplete="off"
+        spellCheck={false}
         onChange={(e) => setSearchQuery(e.target.value)}
         onFocus={() => { setShowSuggestions(true); setSuggestions(buildSuggestions(searchQuery)); }}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && suggestions.length > 0) {
             e.preventDefault();
@@ -159,7 +173,7 @@ const HomePage = () => {
         className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-0"
       />
       {showSuggestions && (
-        <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-amber-100 rounded-xl shadow-lg max-h-64 overflow-auto z-50">
+        <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-amber-100 rounded-xl shadow-lg max-h-64 overflow-auto z-40">
           {suggestions.length === 0 ? (
             <div className="px-4 py-3 text-slate-500 text-sm">No matches found</div>
           ) : (
@@ -227,7 +241,7 @@ const HomePage = () => {
               </a>
 
               {/* Top Cart Button */}
-              <Button onClick={() => setIsCartOpen(true)} className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95">
+              <Button onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95">
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 <span className="hidden sm:inline">Cart</span>
                 {getCartItemCount() > 0 && (
@@ -237,7 +251,7 @@ const HomePage = () => {
                 )}
               </Button>
 
-              <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-amber-700 hover:text-amber-900">
+              <Button variant="ghost" size="sm" onClick={() => { setShowSuggestions(false); setIsMobileMenuOpen(!isMobileMenuOpen); }} className="md:hidden text-amber-700 hover:text-amber-900">
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
@@ -258,7 +272,7 @@ const HomePage = () => {
                 <Button variant="ghost" onClick={() => scrollToSection('products')} className="justify-start text-amber-700 hover:bg-amber-50">
                   <Package className="w-4 h-4 mr-2" /> Products
                 </Button>
-                <Button variant="ghost" onClick={() => setIsCartOpen(true)} className="justify-start text-amber-700 hover:bg-amber-50">
+                <Button variant="ghost" onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} className="justify-start text-amber-700 hover:bg-amber-50">
                   <ShoppingCart className="w-4 h-4 mr-2" /> Cart
                 </Button>
                 <Button variant="ghost" onClick={() => scrollToSection('about')} className="justify-start text-amber-700 hover:bg-amber-50">
@@ -289,11 +303,11 @@ const HomePage = () => {
 
         <div className="container mx-auto px-4 z-10 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 gradient-text">
+            <h2 className="reveal-up text-4xl md:text-6xl font-extrabold mb-4 text-white" style={{textShadow:'0 3px 14px rgba(0,0,0,0.7), 0 0 1px rgba(0,0,0,0.8)'}}>
               {titleText}<span className="caret">|</span>
             </h2>
             <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
-              <span className="inline-block bg-amber-100/90 text-amber-900 rounded-full px-4 py-2 shadow-sm ring-1 ring-amber-300">
+              <span className="inline-block bg-amber-100/95 text-amber-900 rounded-full px-4 py-2 shadow-sm ring-1 ring-amber-300">
                 Farm-fresh quality delivered to your doorstep<span className="caret">|</span>
               </span>
             </p>
@@ -488,17 +502,17 @@ const HomePage = () => {
       {/* Mobile Bottom Navigation - Light, with Cart */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-100 z-30" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}>
         <div className="flex justify-around py-2">
-          <button onClick={() => { setActiveSection('home'); scrollToSection('home'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}>
+          <button onClick={() => { scrollToSection('home'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Home className="w-5 h-5" />
             <span className="text-[11px]">Home</span>
           </button>
 
-          <button onClick={() => { setActiveSection('products'); scrollToSection('products'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}>
+          <button onClick={() => { scrollToSection('products'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Package className="w-5 h-5" />
             <span className="text-[11px]">Products</span>
           </button>
 
-          <button onClick={() => { setActiveSection('cart'); setIsCartOpen(true); }} className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}>
+          <button onClick={() => { setShowSuggestions(false); setActiveSection('cart'); setIsCartOpen(true); }} className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}>
             <div className="relative">
               <ShoppingCart className="w-6 h-6" />
               {getCartItemCount() > 0 && (
@@ -508,12 +522,12 @@ const HomePage = () => {
             <span className="text-[11px]">Cart</span>
           </button>
 
-          <button onClick={() => { setActiveSection('about'); scrollToSection('about'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}>
+          <button onClick={() => { scrollToSection('about'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Info className="w-5 h-5" />
             <span className="text-[11px]">About</span>
           </button>
 
-          <button onClick={() => { setActiveSection('contact'); scrollToSection('contact'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}>
+          <button onClick={() => { scrollToSection('contact'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Users className="w-5 h-5" />
             <span className="text-[11px]">Contact</span>
           </button>
