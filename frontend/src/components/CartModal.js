@@ -76,7 +76,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
                           </div>
                           <div className="flex items-center space-x-2">
                             <span className="text-lg font-bold text-amber-700">₹{item.price}</span>
-                            {item.originalPrice &amp;&amp; (
+                            {item.originalPrice && (
                               <span className="text-slate-400 line-through text-xs">₹{item.originalPrice}</span>
                             )}
                           </div>
