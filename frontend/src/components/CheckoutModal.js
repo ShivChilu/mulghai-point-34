@@ -166,7 +166,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-slate-700 mb-1"><User className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Full Name *</label>
-                    <Input type="text" value={formData.name} onChange={(e) =&gt; handleInputChange('name', e.target.value)} placeholder="Enter your full name" className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
+                    <Input type="text" value={formData.name} onChange={(e) => handleInputChange('name', e.target.value)} placeholder="Enter your full name" className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-slate-700 mb-1"><Phone className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Phone Number *</label>
