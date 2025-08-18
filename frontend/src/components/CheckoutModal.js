@@ -179,7 +179,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1"><MapPin className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Pincode *</label>
-                  <Input type="text" value={formData.pincode} onChange={(e) =&gt; handleInputChange('pincode', e.target.value)} placeholder="6-digit pincode" maxLength={6} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
+                  <Input type="text" value={formData.pincode} onChange={(e) => handleInputChange('pincode', e.target.value)} placeholder="6-digit pincode" maxLength={6} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
                   {pincodeStatus.message &amp;&amp; (
                     <div className={`mt-2 p-2.5 rounded-xl text-xs ${pincodeStatus.valid ? 'bg-emerald-50 border border-emerald-100 text-emerald-800' : 'bg-rose-50 border border-rose-100 text-rose-800'}`}>
                       {pincodeStatus.message}
