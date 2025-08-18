@@ -170,7 +170,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-slate-700 mb-1"><Phone className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Phone Number *</label>
-                    <Input type="tel" value={formData.phone} onChange={(e) =&gt; handleInputChange('phone', e.target.value)} placeholder="10-digit mobile number" maxLength={10} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
+                    <Input type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} placeholder="10-digit mobile number" maxLength={10} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
                   </div>
                 </div>
                 <div>
