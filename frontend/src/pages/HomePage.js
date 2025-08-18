@@ -267,25 +267,25 @@ const HomePage = () => {
       <section className="py-6 bg-white/70 backdrop-blur-md border-y border-amber-100">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-2">
-            {categories.map(category =&gt; (
-              &lt;Button
+            {categories.map(category => (
+              <Button
                 key={category.id}
                 variant={selectedCategory === category.id ? 'default' : 'outline'}
-                onClick={() =&gt; setSelectedCategory(category.id)}
+                onClick={() => setSelectedCategory(category.id)}
                 className={`${
                   selectedCategory === category.id
                     ? 'bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-sm'
                     : 'border border-amber-200 text-amber-700 hover:bg-amber-50 bg-white'
                 } rounded-full px-5 py-2 transition-all`}
-              &gt;
+              >
                 {category.name}
-                &lt;Badge
+                <Badge
                   variant="secondary"
                   className={`ml-2 ${selectedCategory === category.id ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}
-                &gt;
+                >
                   {category.count}
-                &lt;/Badge&gt;
-              &lt;/Button&gt;
+                </Badge>
+              </Button>
             ))}
           </div>
         </div>
