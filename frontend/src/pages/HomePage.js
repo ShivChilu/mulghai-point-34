@@ -412,7 +412,7 @@ const HomePage = () => {
                     <MapPin className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Local &amp; Fresh</h4>
+                    <h4 className="text-xl font-semibold mb-2">Local & Fresh</h4>
                     <p className="text-slate-600">Sourced from local farms, supporting our community while ensuring maximum freshness.</p>
                   </div>
                 </div>
@@ -420,7 +420,7 @@ const HomePage = () => {
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&amp;fit=crop&amp;w=800&amp;q=80"
+                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80"
                 alt="Fresh meat display"
                 className="relative rounded-3xl shadow-lg w-full"
               />
@@ -449,17 +449,17 @@ const HomePage = () => {
             <div>
               <h5 className="text-lg font-semibold mb-4 text-amber-800">Quick Links</h5>
               <ul className="space-y-2">
-                <li><button onClick={() =&gt; scrollToSection('products')} className="text-slate-700 hover:text-amber-700">Products</button></li>
-                <li><button onClick={() =&gt; scrollToSection('about')} className="text-slate-700 hover:text-amber-700">About Us</button></li>
-                <li><button onClick={() =&gt; scrollToSection('contact')} className="text-slate-700 hover:text-amber-700">Contact</button></li>
+                <li><button onClick={() => scrollToSection('products')} className="text-slate-700 hover:text-amber-700">Products</button></li>
+                <li><button onClick={() => scrollToSection('about')} className="text-slate-700 hover:text-amber-700">About Us</button></li>
+                <li><button onClick={() => scrollToSection('contact')} className="text-slate-700 hover:text-amber-700">Contact</button></li>
               </ul>
             </div>
             <div>
               <h5 className="text-lg font-semibold mb-4 text-amber-800">Delivery Areas</h5>
               <ul className="space-y-2 text-slate-700">
-                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">LPU Campus &amp; Vicinity</li>
+                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">LPU Campus & Vicinity</li>
                 <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">Phagwara City</li>
-                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">Domeli &amp; Surrounding Areas</li>
+                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">Domeli & Surrounding Areas</li>
               </ul>
             </div>
           </div>
