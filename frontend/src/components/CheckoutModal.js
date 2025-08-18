@@ -133,7 +133,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                       </div>
                     </div>
                   </div>
-                  {deliveryCharge &gt; 0 &amp;&amp; (
+                  {deliveryCharge > 0 && (
                     <div className="mt-3 p-2.5 bg-amber-50 rounded-xl border border-amber-100">
                       <p className="text-amber-700 text-sm flex items-center space-x-2">
                         <Truck className="w-4 h-4" />
