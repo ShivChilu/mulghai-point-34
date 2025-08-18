@@ -106,7 +106,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() =&gt; onUpdateQuantity(item.id, 0)}
+                            onClick={() => onUpdateQuantity(item.id, 0)}
                             className="w-9 h-9 p-0 rounded-full text-rose-600 hover:text-rose-700 hover:bg-rose-50"
                           >
                             <Trash2 className="w-4 h-4" />
