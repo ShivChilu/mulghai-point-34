@@ -63,7 +63,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
 
               {/* Cart Items */}
               <div className="space-y-3">
-                {cart.map((item) =&gt; (
+                {cart.map((item) => (
                   <Card key={item.id} className="bg-white border border-amber-100 rounded-2xl overflow-hidden group">
                     <CardContent className="p-4">
                       <div className="flex items-center space-x-4">
