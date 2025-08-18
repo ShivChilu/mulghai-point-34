@@ -46,7 +46,7 @@ const HomePage = () => {
 
   // Continuous typewriter for the main heading
   useEffect(() => {
-    const full = 'Premium Fresh Meat';
+    const full = 'Fresh Meat';
     let i = 0;
     let direction = 1; // 1 typing, -1 deleting
     let timer;
