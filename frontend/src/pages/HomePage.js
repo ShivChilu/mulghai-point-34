@@ -473,7 +473,7 @@ const HomePage = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-100 z-30" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}>
         <div className="flex justify-around py-2">
           <button
-            onClick={() =&gt; { setActiveSection('home'); scrollToSection('home'); }}
+            onClick={() => { setActiveSection('home'); scrollToSection('home'); }}
             className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}
           >
             <Home className="w-5 h-5" />
@@ -481,7 +481,7 @@ const HomePage = () => {
           </button>
 
           <button
-            onClick={() =&gt; { setActiveSection('products'); scrollToSection('products'); }}
+            onClick={() => { setActiveSection('products'); scrollToSection('products'); }}
             className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}
           >
             <Package className="w-5 h-5" />
@@ -489,12 +489,12 @@ const HomePage = () => {
           </button>
 
           <button
-            onClick={() =&gt; { setActiveSection('cart'); setIsCartOpen(true); }}
+            onClick={() => { setActiveSection('cart'); setIsCartOpen(true); }}
             className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}
           >
             <div className="relative">
               <ShoppingCart className="w-6 h-6" />
-              {getCartItemCount() &gt; 0 &amp;&amp; (
+              {getCartItemCount() > 0 && (
                 <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
                   {getCartItemCount()}
                 </span>
@@ -504,7 +504,7 @@ const HomePage = () => {
           </button>
 
           <button
-            onClick={() =&gt; { setActiveSection('about'); scrollToSection('about'); }}
+            onClick={() => { setActiveSection('about'); scrollToSection('about'); }}
             className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}
           >
             <Info className="w-5 h-5" />
@@ -512,7 +512,7 @@ const HomePage = () => {
           </button>
 
           <button
-            onClick={() =&gt; { setActiveSection('contact'); scrollToSection('contact'); }}
+            onClick={() => { setActiveSection('contact'); scrollToSection('contact'); }}
             className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}
           >
             <Users className="w-5 h-5" />
