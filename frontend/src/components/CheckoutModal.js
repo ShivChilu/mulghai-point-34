@@ -15,7 +15,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
 
   if (!isOpen) return null;
 
-  const deliveryCharge = cartTotal &lt; 500 ? 50 : 0;
+  const deliveryCharge = cartTotal < 500 ? 50 : 0;
   const totalWithDelivery = cartTotal + deliveryCharge;
 
   const handleInputChange = (field, value) => {
