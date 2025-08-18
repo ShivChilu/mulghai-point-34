@@ -188,7 +188,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1"><MessageCircle className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Special Instructions (Optional)</label>
-                  <Textarea value={formData.instructions} onChange={(e) =&gt; handleInputChange('instructions', e.target.value)} placeholder="Any special requests, preferred delivery time, or instructions for our delivery team..." rows={2} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" />
+                  <Textarea value={formData.instructions} onChange={(e) => handleInputChange('instructions', e.target.value)} placeholder="Any special requests, preferred delivery time, or instructions for our delivery team..." rows={2} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" />
                 </div>
                 <Button type="submit" disabled={isSubmitting} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 text-base font-semibold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed" size="lg">
                   {isSubmitting ? (
