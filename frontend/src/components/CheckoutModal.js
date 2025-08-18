@@ -62,7 +62,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
     if (formData.instructions.trim()) message += `Special Instructions: ${formData.instructions}\n`;
 
     message += `\n*Order Items:*\n`;
-    cart.forEach(item =&gt; { message += `• ${item.name} (${item.weight}) × ${item.quantity} = ₹${item.price * item.quantity}\n`; });
+    cart.forEach(item => { message += `• ${item.name} (${item.weight}) × ${item.quantity} = ₹${item.price * item.quantity}\n`; });
 
     message += `\n*Order Summary:*\n`;
     message += `Subtotal: ₹${cartTotal}\n`;
