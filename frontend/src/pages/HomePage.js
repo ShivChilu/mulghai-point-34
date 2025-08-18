@@ -312,31 +312,31 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredProducts.map(product =&gt; (
-                &lt;Card
+              {filteredProducts.map(product => (
+                <Card
                   key={product.id}
                   className="group bg-white border border-amber-100 hover:shadow-md transition-all rounded-2xl overflow-hidden cursor-pointer"
-                  onClick={() =&gt; setSelectedProduct(product)}
-                &gt;
+                  onClick={() => setSelectedProduct(product)}
+                >
                   <div className="relative overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    {product.isNew &amp;&amp; (
-                      &lt;Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full"&gt;
+                    {product.isNew && (
+                      <Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">
                         New
-                      &lt;/Badge&gt;
+                      </Badge>
                     )}
-                    {product.discount &amp;&amp; (
-                      &lt;Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full"&gt;
+                    {product.discount && (
+                      <Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">
                         {product.discount}% OFF
-                      &lt;/Badge&gt;
+                      </Badge>
                     )}
                   </div>
 
-                  &lt;CardHeader className="pb-2"&gt;
+                  <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">
                         {product.name}
@@ -346,18 +346,18 @@ const HomePage = () => {
                         <span className="text-sm text-amber-700 font-medium">{product.rating}</span>
                       </div>
                     </div>
-                    &lt;CardDescription className="text-sm text-slate-600 line-clamp-2"&gt;
+                    <CardDescription className="text-sm text-slate-600 line-clamp-2">
                       {product.description}
-                    &lt;/CardDescription&gt;
-                  &lt;/CardHeader&gt;
+                    </CardDescription>
+                  </CardHeader>
 
-                  &lt;CardContent&gt;
+                  <CardContent>
                     <div className="flex justify-between items-center mb-4">
                       <div className="flex flex-wrap gap-1">
-                        {product.tags.slice(0, 2).map(tag =&gt; (
-                          &lt;Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200"&gt;
+                        {product.tags.slice(0, 2).map(tag => (
+                          <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200">
                             {tag}
-                          &lt;/Badge&gt;
+                          </Badge>
                         ))}
                       </div>
                       <div className="text-right">
@@ -366,14 +366,14 @@ const HomePage = () => {
                       </div>
                     </div>
 
-                    &lt;Button
+                    <Button
                       className="w-full bg-amber-600 hover:bg-amber-500 text-white rounded-full py-3 font-semibold transition-transform active:scale-95"
-                      onClick={(e) =&gt; { e.stopPropagation(); setSelectedProduct(product); }}
-                    &gt;
+                      onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }}
+                    >
                       Select Weight
-                    &lt;/Button&gt;
-                  &lt;/CardContent&gt;
-                &lt;/Card&gt;
+                    </Button>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           )}
