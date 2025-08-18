@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Menu, X, Home, Package, Info, Users } from 'lucide-react';
+import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Menu, X, Home, Package, Info, Users, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -22,6 +22,8 @@ const HomePage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [showIntro, setShowIntro] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -47,6 +49,23 @@ const HomePage = () => {
   useEffect(() => {
     filterProducts();
   }, [selectedCategory, searchQuery, products]);
+
+  const buildSuggestions = (q) => {
+    let items = products.map(p => ({ id: p.id, name: p.name, subtitle: p.category, image: p.image, tags: p.tags || [] }));
+    if (q && q.trim()) {
+      const term = q.toLowerCase();
+      items = items.filter(p =>
+        p.name.toLowerCase().includes(term) ||
+        (p.subtitle || '').toLowerCase().includes(term) ||
+        (p.tags && p.tags.some(t => (t || '').toLowerCase().includes(term)))
+      );
+    }
+    return items.slice(0, 8);
+  };
+
+  useEffect(() => {
+    setSuggestions(buildSuggestions(searchQuery));
+  }, [searchQuery, products]);
 
   const filterProducts = () => {
     let filtered = products;
@@ -105,6 +124,58 @@ const HomePage = () => {
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleSuggestionSelect = (name) => {
+    setSearchQuery(name);
+    setShowSuggestions(false);
+    scrollToSection('products');
+  };
+
+  const SearchBox = ({ mobile = false }) => (
+    <div className="relative w-full">
+      <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${mobile ? 'text-amber-600/70' : 'text-amber-600/70'} w-5 h-5 z-10`} />
+      <Input
+        type="text"
+        placeholder="Search chicken, mutton, fish..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onFocus={() => { setShowSuggestions(true); setSuggestions(buildSuggestions(searchQuery)); }}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && suggestions.length > 0) {
+            e.preventDefault();
+            handleSuggestionSelect(suggestions[0].name);
+          }
+        }}
+        className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-0"
+      />
+      {showSuggestions && (
+        <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-amber-100 rounded-xl shadow-lg max-h-64 overflow-auto z-50">
+          {suggestions.length === 0 ? (
+            <div className="px-4 py-3 text-slate-500 text-sm">No matches found</div>
+          ) : (
+            suggestions.map(s => (
+              <button
+                key={s.id}
+                className="w-full text-left px-4 py-3 hover:bg-amber-50 flex items-center space-x-3"
+                onMouseDown={() => handleSuggestionSelect(s.name)}
+              >
+                <img src={s.image} alt={s.name} className="w-8 h-8 rounded object-cover" />
+                <div className="min-w-0">
+                  <div className="font-medium text-slate-800 truncate">{s.name}</div>
+                  <div className="text-xs text-slate-500 truncate">{s.subtitle}</div>
+                </div>
+                <div className="ml-auto flex items-center space-x-1 text-amber-600 text-xs">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>suggestion</span>
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-50 text-slate-800 pb-[calc(env(safe-area-inset-bottom)+84px)]">
       {/* Intro splash - plays once on open then hides */}
@@ -135,16 +206,7 @@ const HomePage = () => {
 
             {/* Search - Desktop */}
             <div className="hidden md:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600/70 w-5 h-5 z-10" />
-                <Input
-                  type="text"
-                  placeholder="Search chicken, mutton, fish..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-0"
-                />
-              </div>
+              <SearchBox />
             </div>
 
             <div className="flex items-center space-x-2">
@@ -183,16 +245,7 @@ const HomePage = () => {
 
           {/* Mobile Search */}
           <div className="md:hidden mt-3">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600/70 w-5 h-5" />
-              <Input
-                type="text"
-                placeholder="Search chicken, mutton, fish..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400"
-              />
-            </div>
+            <SearchBox mobile />
           </div>
 
           {/* Mobile Menu */}
@@ -220,7 +273,7 @@ const HomePage = () => {
         </div>
       </header>
 
-      {/* Hero Section - Image visible with minimal bottom gradient */}
+      {/* Hero Section - Image visible, no overlay */}
       <section id="home" className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
@@ -229,24 +282,22 @@ const HomePage = () => {
             alt="Premium meat background"
             className="w-full h-full object-cover"
           />
-          {/* Only a bottom gradient to help text readability without hiding the image */}
-          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-white/70 via-white/20 to-transparent md:from-white/40"></div>
         </div>
 
-        {/* Subtle live animated blobs */}
+        {/* Subtle live animated elements (no image overlay) */}
         <div className="pointer-events-none absolute inset-0">
           <span className="absolute top-10 left-8 w-20 h-20 bg-amber-300/25 rounded-full blur-2xl float-1"></span>
           <span className="absolute bottom-14 right-12 w-24 h-24 bg-rose-300/25 rounded-full blur-2xl float-2"></span>
-          <span className="absolute top-1/2 left-1/3 w-16 h-16 bg-emerald-300/20 rounded-full blur-xl float-3"></span>
+          <span className="absolute top-1/3 right-1/4 text-amber-300/80 float-3"><Sparkles className="w-8 h-8" /></span>
         </div>
 
         <div className="container mx-auto px-4 z-10 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-600 via-rose-500 to-orange-600 bg-clip-text text-transparent">
+            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-600 via-rose-500 to-orange-600 bg-clip-text text-transparent" style={{textShadow:'0 2px 8px rgba(0,0,0,0.25)'}}>
               Premium Fresh Meat
             </h2>
-            <p className="reveal-up text-lg md:text-2xl mb-8 text-slate-700" style={{animationDelay:'200ms'}}>
-              Farm-fresh quality delivered to your doorstep
+            <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
+              <span className="inline-block bg-amber-100/90 text-amber-900 rounded-full px-4 py-2 shadow-sm" style={{backdropFilter:'blur(2px)'}}>Farm-fresh quality delivered to your doorstep</span>
             </p>
 
             <div className="reveal-up flex flex-col sm:flex-row justify-center gap-4 mb-12" style={{animationDelay:'350ms'}}>
@@ -363,7 +414,7 @@ const HomePage = () => {
                   </div>
 
                   <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify_between items-start">
                       <CardTitle className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">
                         {product.name}
                       </CardTitle>
