@@ -9,7 +9,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
 
   const deliveryCharge = getCartTotal() < 500 ? 50 : 0;
   const totalWithDelivery = getCartTotal() + deliveryCharge;
-  const savings = cart.reduce((total, item) =&gt; total + (item.originalPrice || 0) * item.quantity, 0) - getCartTotal();
+  const savings = cart.reduce((total, item) => total + (item.originalPrice || 0) * item.quantity, 0) - getCartTotal();
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-0 md:p-4">
