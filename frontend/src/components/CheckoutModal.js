@@ -175,7 +175,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1"><MapPin className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Delivery Address *</label>
-                  <Textarea value={formData.address} onChange={(e) =&gt; handleInputChange('address', e.target.value)} placeholder="Enter your complete delivery address with landmarks" rows={3} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
+                  <Textarea value={formData.address} onChange={(e) => handleInputChange('address', e.target.value)} placeholder="Enter your complete delivery address with landmarks" rows={3} className="bg-white border border-amber-200 rounded-xl text-slate-800 placeholder-slate-400 focus:border-amber-400" required />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1"><MapPin className="w-3.5 h-3.5 inline mr-1 text-amber-700" /> Pincode *</label>
