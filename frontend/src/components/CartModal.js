@@ -130,7 +130,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
         </div>
 
         {/* Summary & Checkout */}
-        {cart.length &gt; 0 &amp;&amp; (
+        {cart.length > 0 && (
           <div className="bg-white/80 backdrop-blur p-4 border-t border-amber-100">
             <div className="space-y-2 mb-4">
               <div className="flex justify-between items-center">
