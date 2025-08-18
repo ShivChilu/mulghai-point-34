@@ -21,7 +21,13 @@ const HomePage = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [showIntro, setShowIntro] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowIntro(false), 1200);
+    return () => clearTimeout(t);
+  }, []);
 
   const categories = [
     { id: 'all', name: 'All Items', count: products.length },
@@ -48,7 +54,7 @@ const HomePage = () => {
       filtered = filtered.filter(product => product.category === selectedCategory);
     }
     if (searchQuery.trim()) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -101,6 +107,18 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-50 text-slate-800 pb-[calc(env(safe-area-inset-bottom)+84px)]">
+      {/* Intro splash - plays once on open then hides */}
+      {showIntro && (
+        <div className="fixed inset-0 z-[60] bg-white flex items-center justify-center">
+          <div className="splash-enter text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center shadow-md">
+              <Award className="w-9 h-9 text-white" />
+            </div>
+            <h1 className="mt-4 text-xl font-semibold text-amber-800">Mulghai Point</h1>
+          </div>
+        </div>
+      )}
+
       {/* Header - Light Theme */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-amber-100">
         <div className="container mx-auto px-4 py-3">
@@ -202,28 +220,36 @@ const HomePage = () => {
         </div>
       </header>
 
-      {/* Hero Section - light overlays */}
+      {/* Hero Section - Image visible with minimal bottom gradient */}
       <section id="home" className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image with light overlay */}
+        {/* Background Image */}
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80"
             alt="Premium meat background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/40 to-transparent"></div>
+          {/* Only a bottom gradient to help text readability without hiding the image */}
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-white/70 via-white/20 to-transparent md:from-white/40"></div>
+        </div>
+
+        {/* Subtle live animated blobs */}
+        <div className="pointer-events-none absolute inset-0">
+          <span className="absolute top-10 left-8 w-20 h-20 bg-amber-300/25 rounded-full blur-2xl float-1"></span>
+          <span className="absolute bottom-14 right-12 w-24 h-24 bg-rose-300/25 rounded-full blur-2xl float-2"></span>
+          <span className="absolute top-1/2 left-1/3 w-16 h-16 bg-emerald-300/20 rounded-full blur-xl float-3"></span>
         </div>
 
         <div className="container mx-auto px-4 z-10 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-600 via-rose-500 to-orange-600 bg-clip-text text-transparent">
+            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-600 via-rose-500 to-orange-600 bg-clip-text text-transparent">
               Premium Fresh Meat
             </h2>
-            <p className="text-lg md:text-2xl mb-8 text-slate-700">
+            <p className="reveal-up text-lg md:text-2xl mb-8 text-slate-700" style={{animationDelay:'200ms'}}>
               Farm-fresh quality delivered to your doorstep
             </p>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <div className="reveal-up flex flex-col sm:flex-row justify-center gap-4 mb-12" style={{animationDelay:'350ms'}}>
               <Button
                 size="lg"
                 onClick={() => scrollToSection('products')}
