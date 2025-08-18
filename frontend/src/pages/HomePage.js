@@ -522,42 +522,42 @@ const HomePage = () => {
       </div>
 
       {/* Modals */}
-      {selectedProduct &amp;&amp; (
-        &lt;ProductModal
+      {selectedProduct && (
+        <ProductModal
           product={selectedProduct}
-          onClose={() =&gt; setSelectedProduct(null)}
+          onClose={() => setSelectedProduct(null)}
           onAddToCart={addToCart}
-        /&gt;
+        />
       )}
 
-      &lt;CartModal
+      <CartModal
         isOpen={isCartOpen}
-        onClose={() =&gt; setIsCartOpen(false)}
+        onClose={() => setIsCartOpen(false)}
         cart={cart}
         onUpdateQuantity={updateCartQuantity}
-        onCheckout={() =&gt; { setIsCartOpen(false); setIsCheckoutOpen(true); }}
+        onCheckout={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
         getCartTotal={getCartTotal}
-      /&gt;
+      />
 
-      &lt;CheckoutModal
+      <CheckoutModal
         isOpen={isCheckoutOpen}
-        onClose={() =&gt; setIsCheckoutOpen(false)}
+        onClose={() => setIsCheckoutOpen(false)}
         cart={cart}
         cartTotal={getCartTotal()}
         serviceablePincodes={serviceablePincodes}
-        onOrderComplete={() =&gt; {
+        onOrderComplete={() => {
           setCart([]);
           setIsCheckoutOpen(false);
           toast({ title: 'Order Sent!', description: "Your order has been sent via WhatsApp. We'll confirm shortly." });
         }}
-      /&gt;
+      />
 
       {/* WhatsApp Float Button */}
       <div className="fixed bottom-24 md:bottom-6 right-6 z-40">
         <Button
           size="lg"
           className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-md p-4"
-          onClick={() =&gt; window.open('https://wa.me/917986955634?text=Hi%20Mulghai%20Point,%20I%20need%20help%20with%20my%20order!', '_blank')}
+          onClick={() => window.open('https://wa.me/917986955634?text=Hi%20Mulghai%20Point,%20I%20need%20help%20with%20my%20order!', '_blank')}
         >
           <Phone className="w-6 h-6" />
         </Button>
