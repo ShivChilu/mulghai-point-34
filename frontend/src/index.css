@@ -108,3 +108,10 @@ code {
   100% { opacity: 1; transform: scale(1); }
 }
 .splash-enter { animation: splashZoom 900ms ease forwards; }
+
+/* Caret blink for typewriter */
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+.caret { animation: caretBlink 1s step-end infinite; }

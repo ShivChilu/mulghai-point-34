@@ -24,11 +24,23 @@ const HomePage = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [typedText, setTypedText] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
     const t = setTimeout(() => setShowIntro(false), 1200);
     return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const full = 'Farm-fresh quality delivered to your doorstep';
+    let i = 0;
+    const id = setInterval(() => {
+      setTypedText(full.slice(0, i + 1));
+      i++;
+      if (i >= full.length) clearInterval(id);
+    }, 35);
+    return () => clearInterval(id);
   }, []);
 
   const categories = [
@@ -46,9 +58,7 @@ const HomePage = () => {
     "144407": "Nearby locality: Domeli"
   };
 
-  useEffect(() => {
-    filterProducts();
-  }, [selectedCategory, searchQuery, products]);
+  useEffect(() => { filterProducts(); }, [selectedCategory, searchQuery, products]);
 
   const buildSuggestions = (q) => {
     let items = products.map(p => ({ id: p.id, name: p.name, subtitle: p.category, image: p.image, tags: p.tags || [] }));
@@ -63,55 +73,36 @@ const HomePage = () => {
     return items.slice(0, 8);
   };
 
-  useEffect(() => {
-    setSuggestions(buildSuggestions(searchQuery));
-  }, [searchQuery, products]);
+  useEffect(() => { setSuggestions(buildSuggestions(searchQuery)); }, [searchQuery, products]);
 
   const filterProducts = () => {
     let filtered = products;
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
+    if (selectedCategory !== 'all') filtered = filtered.filter(product => product.category === selectedCategory);
     if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
       filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        product.name.toLowerCase().includes(q) ||
+        product.description.toLowerCase().includes(q) ||
+        product.tags.some(tag => tag.toLowerCase().includes(q))
       );
     }
     setFilteredProducts(filtered);
   };
 
   const addToCart = (product, weight, price) => {
-    const cartItem = {
-      id: `${product.id}-${weight}`,
-      productId: product.id,
-      name: product.name,
-      weight,
-      price,
-      quantity: 1,
-      image: product.image
-    };
-
+    const cartItem = { id: `${product.id}-${weight}`, productId: product.id, name: product.name, weight, price, quantity: 1, image: product.image };
     const existingItem = cart.find(item => item.id === cartItem.id);
     if (existingItem) {
       setCart(cart.map(item => item.id === cartItem.id ? { ...item, quantity: item.quantity + 1 } : item));
     } else {
       setCart([...cart, cartItem]);
     }
-
-    toast({
-      title: 'Added to Cart',
-      description: `${product.name} (${weight}) added successfully`,
-    });
+    toast({ title: 'Added to Cart', description: `${product.name} (${weight}) added successfully` });
   };
 
   const updateCartQuantity = (itemId, newQuantity) => {
-    if (newQuantity === 0) {
-      setCart(cart.filter(item => item.id !== itemId));
-    } else {
-      setCart(cart.map(item => item.id === itemId ? { ...item, quantity: newQuantity } : item));
-    }
+    if (newQuantity === 0) setCart(cart.filter(item => item.id !== itemId));
+    else setCart(cart.map(item => item.id === itemId ? { ...item, quantity: newQuantity } : item));
   };
 
   const getCartTotal = () => cart.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -131,7 +122,7 @@ const HomePage = () => {
   };
 
   const SearchBox = ({ mobile = false }) => (
-    <div className="relative w-full">
+    <div className="relative w-full z-50">
       <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${mobile ? 'text-amber-600/70' : 'text-amber-600/70'} w-5 h-5 z-10`} />
       <Input
         type="text"
@@ -158,6 +149,7 @@ const HomePage = () => {
                 key={s.id}
                 className="w-full text-left px-4 py-3 hover:bg-amber-50 flex items-center space-x-3"
                 onMouseDown={() => handleSuggestionSelect(s.name)}
+                onTouchStart={() => handleSuggestionSelect(s.name)}
               >
                 <img src={s.image} alt={s.name} className="w-8 h-8 rounded object-cover" />
                 <div className="min-w-0">
@@ -191,7 +183,7 @@ const HomePage = () => {
       )}
 
       {/* Header - Light Theme */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-amber-100">
+      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-amber-100">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -210,19 +202,13 @@ const HomePage = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <a
-                href="tel:7986955634"
-                className="hidden md:flex items-center space-x-2 text-amber-700 hover:text-amber-800 transition-colors px-3 py-2 rounded-full"
-              >
+              <a href="tel:7986955634" className="hidden md:flex items-center space-x-2 text-amber-700 hover:text-amber-800 transition-colors px-3 py-2 rounded-full">
                 <Phone className="w-4 h-4" />
                 <span className="text-sm font-medium">7986955634</span>
               </a>
 
               {/* Top Cart Button */}
-              <Button
-                onClick={() => setIsCartOpen(true)}
-                className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95"
-              >
+              <Button onClick={() => setIsCartOpen(true)} className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95">
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 <span className="hidden sm:inline">Cart</span>
                 {getCartItemCount() > 0 && (
@@ -232,12 +218,7 @@ const HomePage = () => {
                 )}
               </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden text-amber-700 hover:text-amber-900"
-              >
+              <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-amber-700 hover:text-amber-900">
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
@@ -277,11 +258,7 @@ const HomePage = () => {
       <section id="home" className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80"
-            alt="Premium meat background"
-            className="w-full h-full object-cover"
-          />
+          <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80" alt="Premium meat background" className="w-full h-full object-cover" />
         </div>
 
         {/* Subtle live animated elements (no image overlay) */}
@@ -297,23 +274,16 @@ const HomePage = () => {
               Premium Fresh Meat
             </h2>
             <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
-              <span className="inline-block bg-amber-100/90 text-amber-900 rounded-full px-4 py-2 shadow-sm" style={{backdropFilter:'blur(2px)'}}>Farm-fresh quality delivered to your doorstep</span>
+              <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-rose-400 to-orange-400 font-semibold text-xl md:text-2xl" style={{textShadow:'0 1px 6px rgba(0,0,0,0.35)'}}>
+                {typedText}<span className="caret">|</span>
+              </span>
             </p>
 
             <div className="reveal-up flex flex-col sm:flex-row justify-center gap-4 mb-12" style={{animationDelay:'350ms'}}>
-              <Button
-                size="lg"
-                onClick={() => scrollToSection('products')}
-                className="bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-full shadow-md transition-transform active:scale-95"
-              >
+              <Button size="lg" onClick={() => scrollToSection('products')} className="bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-full shadow-md transition-transform active:scale-95">
                 Shop Now
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => window.open('https://wa.me/917986955634', '_blank')}
-                className="border border-amber-300 text-amber-700 hover:bg-amber-50 bg-white px-8 py-4 rounded-full"
-              >
+              <Button size="lg" variant="outline" onClick={() => window.open('https://wa.me/917986955634', '_blank')} className="border border-amber-300 text-amber-700 hover:bg-amber-50 bg-white px-8 py-4 rounded-full">
                 Contact Us
               </Button>
             </div>
@@ -343,23 +313,11 @@ const HomePage = () => {
       {/* Categories - Light */}
       <section className="py-6 bg-white/70 backdrop-blur-md border-y border-amber-100">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex_wrap justify-center gap-2">
             {categories.map(category => (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? 'default' : 'outline'}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`${
-                  selectedCategory === category.id
-                    ? 'bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-sm'
-                    : 'border border-amber-200 text-amber-700 hover:bg-amber-50 bg-white'
-                } rounded-full px-5 py-2 transition-all`}
-              >
+              <Button key={category.id} variant={selectedCategory === category.id ? 'default' : 'outline'} onClick={() => setSelectedCategory(category.id)} className={`${selectedCategory === category.id ? 'bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-sm' : 'border border-amber-200 text-amber-700 hover:bg-amber-50 bg-white'} rounded-full px-5 py-2 transition-all`}>
                 {category.name}
-                <Badge
-                  variant="secondary"
-                  className={`ml-2 ${selectedCategory === category.id ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}
-                >
+                <Badge variant="secondary" className={`ml-2 ${selectedCategory === category.id ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
                   {category.count}
                 </Badge>
               </Button>
@@ -372,12 +330,8 @@ const HomePage = () => {
       <section id="products" className="py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">
-              Our Fresh Products
-            </h3>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              Hand-picked premium quality meat, sourced from trusted farms and delivered fresh to your door
-            </p>
+            <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">Our Fresh Products</h3>
+            <p className="text-slate-600 max-w-2xl mx-auto">Hand-picked premium quality meat, sourced from trusted farms and delivered fresh to your door</p>
           </div>
 
           {filteredProducts.length === 0 ? (
@@ -390,51 +344,31 @@ const HomePage = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map(product => (
-                <Card
-                  key={product.id}
-                  className="group bg-white border border-amber-100 hover:shadow-md transition-all rounded-2xl overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedProduct(product)}
-                >
+                <Card key={product.id} className="group bg-white border border-amber-100 hover:shadow-md transition-all rounded-2xl overflow-hidden cursor-pointer" onClick={() => setSelectedProduct(product)}>
                   <div className="relative overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    <img src={product.image} alt={product.name} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300" />
                     {product.isNew && (
-                      <Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">
-                        New
-                      </Badge>
+                      <Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">New</Badge>
                     )}
                     {product.discount && (
-                      <Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">
-                        {product.discount}% OFF
-                      </Badge>
+                      <Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">{product.discount}% OFF</Badge>
                     )}
                   </div>
-
                   <CardHeader className="pb-2">
-                    <div className="flex justify_between items-start">
-                      <CardTitle className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">
-                        {product.name}
-                      </CardTitle>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">{product.name}</CardTitle>
                       <div className="flex items-center space-x-1 bg-amber-100 rounded-full px-2 py-1">
                         <Star className="w-4 h-4 text-amber-500 fill-current" />
                         <span className="text-sm text-amber-700 font-medium">{product.rating}</span>
                       </div>
                     </div>
-                    <CardDescription className="text-sm text-slate-600 line-clamp-2">
-                      {product.description}
-                    </CardDescription>
+                    <CardDescription className="text-sm text-slate-600 line-clamp-2">{product.description}</CardDescription>
                   </CardHeader>
-
                   <CardContent>
                     <div className="flex justify-between items-center mb-4">
                       <div className="flex flex-wrap gap-1">
                         {product.tags.slice(0, 2).map(tag => (
-                          <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200">
-                            {tag}
-                          </Badge>
+                          <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200">{tag}</Badge>
                         ))}
                       </div>
                       <div className="text-right">
@@ -442,11 +376,7 @@ const HomePage = () => {
                         <p className="text-xs text-slate-500">Starting from ₹{Math.round(product.pricePerKg * 0.25)}</p>
                       </div>
                     </div>
-
-                    <Button
-                      className="w-full bg-amber-600 hover:bg-amber-500 text-white rounded-full py-3 font-semibold transition-transform active:scale-95"
-                      onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }}
-                    >
+                    <Button className="w-full bg-amber-600 hover:bg-amber-500 text-white rounded-full py-3 font-semibold transition-transform active:scale-95" onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }}>
                       Select Weight
                     </Button>
                   </CardContent>
@@ -462,9 +392,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
-              <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">
-                Why Choose Mulghai Point?
-              </h3>
+              <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">Why Choose Mulghai Point?</h3>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
@@ -496,11 +424,7 @@ const HomePage = () => {
               </div>
             </div>
             <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80"
-                alt="Fresh meat display"
-                className="relative rounded-3xl shadow-lg w-full"
-              />
+              <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80" alt="Fresh meat display" className="relative rounded-3xl shadow-lg w-full" />
             </div>
           </div>
         </div>
@@ -549,49 +473,32 @@ const HomePage = () => {
       {/* Mobile Bottom Navigation - Light, with Cart */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-100 z-30" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}>
         <div className="flex justify-around py-2">
-          <button
-            onClick={() => { setActiveSection('home'); scrollToSection('home'); }}
-            className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}
-          >
+          <button onClick={() => { setActiveSection('home'); scrollToSection('home'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Home className="w-5 h-5" />
             <span className="text-[11px]">Home</span>
           </button>
 
-          <button
-            onClick={() => { setActiveSection('products'); scrollToSection('products'); }}
-            className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}
-          >
+          <button onClick={() => { setActiveSection('products'); scrollToSection('products'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Package className="w-5 h-5" />
             <span className="text-[11px]">Products</span>
           </button>
 
-          <button
-            onClick={() => { setActiveSection('cart'); setIsCartOpen(true); }}
-            className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}
-          >
+          <button onClick={() => { setActiveSection('cart'); setIsCartOpen(true); }} className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}>
             <div className="relative">
               <ShoppingCart className="w-6 h-6" />
               {getCartItemCount() > 0 && (
-                <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
-                  {getCartItemCount()}
-                </span>
+                <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">{getCartItemCount()}</span>
               )}
             </div>
             <span className="text-[11px]">Cart</span>
           </button>
 
-          <button
-            onClick={() => { setActiveSection('about'); scrollToSection('about'); }}
-            className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}
-          >
+          <button onClick={() => { setActiveSection('about'); scrollToSection('about'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Info className="w-5 h-5" />
             <span className="text-[11px]">About</span>
           </button>
 
-          <button
-            onClick={() => { setActiveSection('contact'); scrollToSection('contact'); }}
-            className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}
-          >
+          <button onClick={() => { setActiveSection('contact'); scrollToSection('contact'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}>
             <Users className="w-5 h-5" />
             <span className="text-[11px]">Contact</span>
           </button>
@@ -600,42 +507,16 @@ const HomePage = () => {
 
       {/* Modals */}
       {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          onAddToCart={addToCart}
-        />
+        <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={addToCart} />
       )}
 
-      <CartModal
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cart={cart}
-        onUpdateQuantity={updateCartQuantity}
-        onCheckout={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
-        getCartTotal={getCartTotal}
-      />
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onUpdateQuantity={updateCartQuantity} onCheckout={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }} getCartTotal={getCartTotal} />
 
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        cart={cart}
-        cartTotal={getCartTotal()}
-        serviceablePincodes={serviceablePincodes}
-        onOrderComplete={() => {
-          setCart([]);
-          setIsCheckoutOpen(false);
-          toast({ title: 'Order Sent!', description: "Your order has been sent via WhatsApp. We'll confirm shortly." });
-        }}
-      />
+      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} cart={cart} cartTotal={getCartTotal()} serviceablePincodes={serviceablePincodes} onOrderComplete={() => { setCart([]); setIsCheckoutOpen(false); toast({ title: 'Order Sent!', description: "Your order has been sent via WhatsApp. We'll confirm shortly." }); }} />
 
       {/* WhatsApp Float Button */}
       <div className="fixed bottom-24 md:bottom-6 right-6 z-40">
-        <Button
-          size="lg"
-          className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-md p-4"
-          onClick={() => window.open('https://wa.me/917986955634?text=Hi%20Mulghai%20Point,%20I%20need%20help%20with%20my%20order!', '_blank')}
-        >
+        <Button size="lg" className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-md p-4" onClick={() => window.open('https://wa.me/917986955634?text=Hi%20Mulghai%20Point,%20I%20need%20help%20with%20my%20order!', '_blank')}>
           <Phone className="w-6 h-6" />
         </Button>
       </div>
