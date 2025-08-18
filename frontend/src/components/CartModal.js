@@ -149,7 +149,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
                   <span className="font-semibold">₹{deliveryCharge}</span>
                 </div>
               )}
-              {deliveryCharge === 0 &amp;&amp; getCartTotal() &gt;= 500 &amp;&amp; (
+              {deliveryCharge === 0 && getCartTotal() >= 500 && (
                 <div className="flex justify-between items-center text-emerald-700">
                   <span className="flex items-center space-x-1"><Sparkles className="w-4 h-4" /><span>Delivery:</span></span>
                   <span className="font-semibold">FREE</span>
