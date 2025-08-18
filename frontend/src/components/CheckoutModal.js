@@ -124,7 +124,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                     ))}
                     <div className="border-t border-amber-100 pt-3 space-y-1">
                       <div className="flex justify-between text-slate-700"><span>Subtotal:</span><span>₹{cartTotal}</span></div>
-                      {deliveryCharge &gt; 0 &amp;&amp; (
+                      {deliveryCharge > 0 && (
                         <div className="flex justify-between text-amber-700"><span>Delivery Charge:</span><span>₹{deliveryCharge}</span></div>
                       )}
                       <div className="flex justify-between text-lg font-semibold border-t border-amber-100 pt-2">
