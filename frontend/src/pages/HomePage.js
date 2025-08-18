@@ -140,12 +140,12 @@ const HomePage = () => {
 
               {/* Top Cart Button */}
               <Button
-                onClick={() =&gt; setIsCartOpen(true)}
+                onClick={() => setIsCartOpen(true)}
                 className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 <span className="hidden sm:inline">Cart</span>
-                {getCartItemCount() &gt; 0 &amp;&amp; (
+                {getCartItemCount() > 0 && (
                   <Badge className="absolute -top-2 -right-2 bg-rose-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full">
                     {getCartItemCount()}
                   </Badge>
@@ -155,10 +155,10 @@ const HomePage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() =&gt; setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="md:hidden text-amber-700 hover:text-amber-900"
               >
-                {isMobileMenuOpen ? &lt;X className="w-6 h-6" /&gt; : &lt;Menu className="w-6 h-6" /&gt;}
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
           </div>
@@ -171,30 +171,30 @@ const HomePage = () => {
                 type="text"
                 placeholder="Search chicken, mutton, fish..."
                 value={searchQuery}
-                onChange={(e) =&gt; setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400"
               />
             </div>
           </div>
 
           {/* Mobile Menu */}
-          {isMobileMenuOpen &amp;&amp; (
+          {isMobileMenuOpen && (
             <div className="md:hidden mt-3 bg-white/90 backdrop-blur-md rounded-xl p-3 border border-amber-100">
               <div className="flex flex-col space-y-1">
-                <Button variant="ghost" onClick={() =&gt; scrollToSection('home')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  &lt;Home className="w-4 h-4 mr-2" /&gt; Home
+                <Button variant="ghost" onClick={() => scrollToSection('home')} className="justify-start text-amber-700 hover:bg-amber-50">
+                  <Home className="w-4 h-4 mr-2" /> Home
                 </Button>
-                <Button variant="ghost" onClick={() =&gt; scrollToSection('products')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  &lt;Package className="w-4 h-4 mr-2" /&gt; Products
+                <Button variant="ghost" onClick={() => scrollToSection('products')} className="justify-start text-amber-700 hover:bg-amber-50">
+                  <Package className="w-4 h-4 mr-2" /> Products
                 </Button>
-                <Button variant="ghost" onClick={() =&gt; setIsCartOpen(true)} className="justify-start text-amber-700 hover:bg-amber-50">
-                  &lt;ShoppingCart className="w-4 h-4 mr-2" /&gt; Cart
+                <Button variant="ghost" onClick={() => setIsCartOpen(true)} className="justify-start text-amber-700 hover:bg-amber-50">
+                  <ShoppingCart className="w-4 h-4 mr-2" /> Cart
                 </Button>
-                <Button variant="ghost" onClick={() =&gt; scrollToSection('about')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  &lt;Info className="w-4 h-4 mr-2" /&gt; About
+                <Button variant="ghost" onClick={() => scrollToSection('about')} className="justify-start text-amber-700 hover:bg-amber-50">
+                  <Info className="w-4 h-4 mr-2" /> About
                 </Button>
-                <Button variant="ghost" onClick={() =&gt; scrollToSection('contact')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  &lt;Users className="w-4 h-4 mr-2" /&gt; Contact
+                <Button variant="ghost" onClick={() => scrollToSection('contact')} className="justify-start text-amber-700 hover:bg-amber-50">
+                  <Users className="w-4 h-4 mr-2" /> Contact
                 </Button>
               </div>
             </div>
@@ -207,7 +207,7 @@ const HomePage = () => {
         {/* Background Image with light overlay */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&amp;fit=crop&amp;w=2000&amp;q=80"
+            src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80"
             alt="Premium meat background"
             className="w-full h-full object-cover"
           />
@@ -226,7 +226,7 @@ const HomePage = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
               <Button
                 size="lg"
-                onClick={() =&gt; scrollToSection('products')}
+                onClick={() => scrollToSection('products')}
                 className="bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-full shadow-md transition-transform active:scale-95"
               >
                 Shop Now
@@ -234,7 +234,7 @@ const HomePage = () => {
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() =&gt; window.open('https://wa.me/917986955634', '_blank')}
+                onClick={() => window.open('https://wa.me/917986955634', '_blank')}
                 className="border border-amber-300 text-amber-700 hover:bg-amber-50 bg-white px-8 py-4 rounded-full"
               >
                 Contact Us
