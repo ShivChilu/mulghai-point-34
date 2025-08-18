@@ -294,7 +294,7 @@ const HomePage = () => {
             </h2>
             <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
               <span className="inline-block bg-amber-100/90 text-amber-900 rounded-full px-4 py-2 shadow-sm ring-1 ring-amber-300">
-                Farm-fresh quality delivered to your doorstep
+                Farm-fresh quality delivered to your doorstep<span className="caret">|</span>
               </span>
             </p>
 
