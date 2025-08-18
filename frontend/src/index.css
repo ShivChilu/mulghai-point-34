@@ -73,12 +73,8 @@ code {
 }
 
 @layer base {
-  * {
-    @apply border-border;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
 }
 
 /* Custom animations for subtle motion and intro splash */
@@ -96,22 +92,23 @@ code {
 .float-2 { animation: float-slower 8s ease-in-out infinite; }
 .float-3 { animation: float-slow 7s ease-in-out infinite; }
 
-@keyframes revealUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes revealUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .reveal-up { animation: revealUp 700ms ease forwards; }
 
-@keyframes splashZoom {
-  0% { opacity: 0; transform: scale(0.92); }
-  60% { opacity: 1; transform: scale(1); }
-  100% { opacity: 1; transform: scale(1); }
-}
+@keyframes splashZoom { 0% { opacity: 0; transform: scale(0.92); } 60% { opacity: 1; transform: scale(1); } 100% { opacity: 1; transform: scale(1); } }
 .splash-enter { animation: splashZoom 900ms ease forwards; }
 
 /* Caret blink for typewriter */
-@keyframes caretBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
-}
+@keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 .caret { animation: caretBlink 1s step-end infinite; }
+
+/* Animated gradient text for heading */
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.gradient-text {
+  background: linear-gradient(90deg, #f59e0b, #ec4899, #f97316, #f59e0b);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientMove 6s ease-in-out infinite;
+}

@@ -24,7 +24,7 @@ const HomePage = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [typedText, setTypedText] = useState('');
+  const [titleText, setTitleText] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,15 +32,34 @@ const HomePage = () => {
     return () => clearTimeout(t);
   }, []);
 
+  // Continuous typewriter for the main heading
   useEffect(() => {
-    const full = 'Farm-fresh quality delivered to your doorstep';
+    const full = 'Premium Fresh Meat';
     let i = 0;
-    const id = setInterval(() => {
-      setTypedText(full.slice(0, i + 1));
-      i++;
-      if (i >= full.length) clearInterval(id);
-    }, 35);
-    return () => clearInterval(id);
+    let direction = 1; // 1 typing, -1 deleting
+    let timer;
+    const step = () => {
+      setTitleText(full.slice(0, i));
+      if (direction === 1) {
+        i++;
+        if (i > full.length) {
+          direction = -1;
+          timer = setTimeout(step, 900); // pause at full text
+          return;
+        }
+      } else {
+        i--;
+        if (i < 0) {
+          direction = 1;
+          i = 0;
+          timer = setTimeout(step, 400); // pause at empty
+          return;
+        }
+      }
+      timer = setTimeout(step, direction === 1 ? 90 : 45);
+    };
+    step();
+    return () => clearTimeout(timer);
   }, []);
 
   const categories = [
@@ -270,12 +289,12 @@ const HomePage = () => {
 
         <div className="container mx-auto px-4 z-10 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-600 via-rose-500 to-orange-600 bg-clip-text text-transparent" style={{textShadow:'0 2px 8px rgba(0,0,0,0.25)'}}>
-              Premium Fresh Meat
+            <h2 className="reveal-up text-4xl md:text-6xl font-bold mb-4 gradient-text">
+              {titleText}<span className="caret">|</span>
             </h2>
             <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
-              <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-rose-400 to-orange-400 font-semibold text-xl md:text-2xl" style={{textShadow:'0 1px 6px rgba(0,0,0,0.35)'}}>
-                {typedText}<span className="caret">|</span>
+              <span className="inline-block bg-amber-100/90 text-amber-900 rounded-full px-4 py-2 shadow-sm ring-1 ring-amber-300">
+                Farm-fresh quality delivered to your doorstep
               </span>
             </p>
 
@@ -313,7 +332,7 @@ const HomePage = () => {
       {/* Categories - Light */}
       <section className="py-6 bg-white/70 backdrop-blur-md border-y border-amber-100">
         <div className="container mx-auto px-4">
-          <div className="flex flex_wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2">
             {categories.map(category => (
               <Button key={category.id} variant={selectedCategory === category.id ? 'default' : 'outline'} onClick={() => setSelectedCategory(category.id)} className={`${selectedCategory === category.id ? 'bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-sm' : 'border border-amber-200 text-amber-700 hover:bg-amber-50 bg-white'} rounded-full px-5 py-2 transition-all`}>
                 {category.name}
@@ -347,12 +366,8 @@ const HomePage = () => {
                 <Card key={product.id} className="group bg-white border border-amber-100 hover:shadow-md transition-all rounded-2xl overflow-hidden cursor-pointer" onClick={() => setSelectedProduct(product)}>
                   <div className="relative overflow-hidden">
                     <img src={product.image} alt={product.name} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    {product.isNew && (
-                      <Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">New</Badge>
-                    )}
-                    {product.discount && (
-                      <Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">{product.discount}% OFF</Badge>
-                    )}
+                    {product.isNew && (<Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">New</Badge>)}
+                    {product.discount && (<Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">{product.discount}% OFF</Badge>)}
                   </div>
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
