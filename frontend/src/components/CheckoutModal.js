@@ -51,7 +51,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
       return;
     }
 
-    await new Promise(resolve =&gt; setTimeout(resolve, 1200));
+    await new Promise(resolve => setTimeout(resolve, 1200));
 
     let message = `🛒 NEW ORDER 🛒\n\n`;
     message += `*Customer Details:*\n`;
