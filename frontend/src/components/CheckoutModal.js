@@ -66,7 +66,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
 
     message += `\n*Order Summary:*\n`;
     message += `Subtotal: ₹${cartTotal}\n`;
-    if (deliveryCharge &gt; 0) message += `Delivery Charge: ₹${deliveryCharge}\n`;
+    if (deliveryCharge > 0) message += `Delivery Charge: ₹${deliveryCharge}\n`;
     message += `*Total Amount: ₹${totalWithDelivery}*\n`;
     message += `Payment: Cash on Delivery\n`;
     message += `\nPlease confirm this order. Thank you! 🙏`;
