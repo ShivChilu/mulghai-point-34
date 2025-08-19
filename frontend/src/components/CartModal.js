@@ -51,7 +51,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
           ) : (
             <div className="space-y-4">
               {/* Smart Suggestions */}
-              {getCartTotal() < 500 && (
+              {getCartTotal() < 150 && (
                 <div className="bg-amber-50 rounded-xl p-3 border border-amber-100">
                   <div className="flex items-center space-x-2 mb-1">
                     <Zap className="w-4 h-4 text-amber-600" />
