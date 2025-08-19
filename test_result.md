@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: Transform the butcher shop app with modern classic theme, HD images, enhanced features including 10 chicken and 5 mutton products, dark/light theme toggle, smart search, WhatsApp emoji integration, live animations, and mobile UI improvements.
+user_problem_statement: in this repo when i opened the website in mobile i want icons at bottom like home,produtc,cart,about,contact  and in dark mode the colors of text is not vivble properly kidly fix it with appropriate colors. Remove chicken keema,livermutton ribs, chicken sauges product list. When i open product for selcting weight in dark mode the weights are visible properly make the text dark in dark mode.
 
 backend:
   - task: "Basic API endpoints"
@@ -121,43 +121,19 @@ backend:
         comment: "All backend API endpoints tested successfully. GET /api/ returns correct message, POST /api/status creates status checks with proper data structure, GET /api/status retrieves all status checks, CORS is properly configured with credentials and origin headers, MongoDB connection and data persistence working correctly. FastAPI server running on correct port via supervisor."
 
 frontend:
-  - task: "Product data expansion"
+  - task: "Mobile bottom navigation"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/data/mockData.js"
+    file: "/app/frontend/src/components/MobileBottomNav.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added 10 chicken products and 5 mutton products with HD images and WhatsApp templates"
+        comment: "Created mobile bottom navigation component with Home, Products, Cart, About, Contact icons. Added sticky bottom bar for mobile devices with active section tracking and cart badge."
 
-  - task: "Theme system implementation"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/contexts/ThemeContext.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Created theme context with light/dark mode toggle and localStorage persistence"
-
-  - task: "Complete UI transformation"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/pages/HomePage.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Completely redesigned UI with classic butcher shop theme, HD backgrounds, animations, mobile improvements"
-
-  - task: "Enhanced CSS animations"
+  - task: "Dark mode color fixes"
     implemented: true
     working: "NA"
     file: "/app/frontend/src/index.css"
@@ -167,31 +143,43 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added comprehensive CSS animations, theme variables, butcher shop textures, and interactive effects"
+        comment: "Enhanced dark mode colors with light glowing text, improved text visibility in cart modal, product modal, and weight selection. Added text-shadow effects for better readability."
 
-  - task: "WhatsApp emoji integration"
+  - task: "Product removal"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/components/CheckoutModal.js"
+    file: "/app/frontend/src/data/mockData.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Enhanced WhatsApp messages with emojis and professional English formatting"
+        comment: "Removed chicken keema, mutton ribs, and chicken sausages from product list as requested."
 
-  - task: "Smart search functionality"
+  - task: "Product weight selection modal fixes"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/pages/HomePage.js"
+    file: "/app/frontend/src/components/ProductModal.js"
     stuck_count: 0
-    priority: "medium"
+    priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Implemented autocomplete search with suggestions dropdown and enhanced filtering"
+        comment: "Fixed dark mode visibility issues in product weight selection modal with better text contrast and glow effects."
+
+  - task: "Cart modal dark mode fixes"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/CartModal.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Enhanced cart modal with proper dark mode colors, improved price visibility with glow effects."
 
 metadata:
   created_by: "main_agent"
