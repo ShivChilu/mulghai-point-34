@@ -131,7 +131,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
 
         {/* Summary & Checkout */}
         {cart.length > 0 && (
-          <div className="bg-white/80 backdrop-blur p-4 border-t border-amber-100">
+          <div className="bg-white/90 backdrop-blur p-4 border-t border-amber-100 flex-shrink-0 md:rounded-b-3xl">
             <div className="space-y-2 mb-4">
               <div className="flex justify-between items-center">
                 <span className="text-slate-700">Subtotal:</span>
