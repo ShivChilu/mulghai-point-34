@@ -728,7 +728,7 @@ const HomePage = () => {
         <Button 
           size="lg" 
           className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-2xl p-6 hover-lift hover-glow" 
-          onClick={() => window.open(`https://wa.me/917986955634?text=${encodeURIComponent(whatsappTemplates.quickOrder)}`, '_blank')}
+          onClick={() => window.open(`https://wa.me/916284307484?text=${encodeURIComponent(whatsappTemplates.quickOrder)}`, '_blank')}
         >
           <div className="flex items-center gap-2">
             <Phone className="w-6 h-6" />
