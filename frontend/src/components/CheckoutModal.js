@@ -57,7 +57,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
     // Generate enhanced WhatsApp message with emojis
     const message = whatsappTemplates.orderMessage(cart, formData, totalWithDelivery);
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/917986955634?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/916284307484?text=${encodedMessage}`, '_blank');
 
     setIsSubmitting(false);
     setFormData({ name: '', phone: '', address: '', pincode: '', instructions: '' });
