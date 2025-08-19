@@ -1,6 +1,6 @@
 // Comprehensive product data for Mulghai Point - Premium Butcher Shop
 export const mockProducts = [
-  // CHICKEN PRODUCTS (10 items)
+  // CHICKEN PRODUCTS (7 items - removed chicken keema and chicken sausages)
   {
     id: 1,
     name: "Premium Chicken Breast",
@@ -109,7 +109,7 @@ export const mockProducts = [
     description: "Premium boneless chicken cut into perfect cubes for tikka, kabab, and stir-fry preparations.",
     category: "chicken",
     pricePerKg: 350,
-    image: "https://images.unsplash.com/photo-1613454320437-0c228c8b1723?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHw0fHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
+    image: "https://images.unsplash.com/photo-1613454320437-0c228c8b1723?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
     rating: 4.9,
     isNew: true,
     discount: null,
@@ -137,42 +137,8 @@ export const mockProducts = [
       { weight: "1kg", price: 180 }
     ]
   },
-  {
-    id: 9,
-    name: "Chicken Keema",
-    description: "Fresh minced chicken, perfect for keema curry, stuffing, and various traditional preparations.",
-    category: "chicken",
-    pricePerKg: 290,
-    image: "https://images.pexels.com/photos/6646034/pexels-photo-6646034.jpeg",
-    rating: 4.5,
-    isNew: false,
-    discount: null,
-    tags: ["Keema", "Minced", "Versatile", "Curry", "Stuffing"],
-    weights: [
-      { weight: "250g", price: 73 },
-      { weight: "500g", price: 145 },
-      { weight: "1kg", price: 290 }
-    ]
-  },
-  {
-    id: 10,
-    name: "Chicken Sausages",
-    description: "Homemade chicken sausages with herbs and spices. Ready to cook, perfect for breakfast or snacks.",
-    category: "chicken",
-    pricePerKg: 380,
-    image: "https://images.unsplash.com/photo-1591510669755-5e6dbb1ca33d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwzfHxtZWF0JTIwcHJvZHVjdHN8ZW58MHx8fHwxNzU1NTk3Mjk4fDA&ixlib=rb-4.1.0&q=85",
-    rating: 4.7,
-    isNew: true,
-    discount: 15,
-    tags: ["Sausages", "Homemade", "Herbs", "Breakfast", "Ready"],
-    weights: [
-      { weight: "250g", price: 95 },
-      { weight: "500g", price: 190 },
-      { weight: "1kg", price: 380 }
-    ]
-  },
 
-  // MUTTON PRODUCTS (5 items)
+  // MUTTON PRODUCTS (4 items - removed mutton ribs)
   {
     id: 11,
     name: "Mutton Leg - Premium Cut",
@@ -222,23 +188,6 @@ export const mockProducts = [
       { weight: "250g", price: 145 },
       { weight: "500g", price: 290 },
       { weight: "1kg", price: 580 }
-    ]
-  },
-  {
-    id: 14,
-    name: "Mutton Ribs",
-    description: "Tender mutton ribs with perfect marbling. Ideal for BBQ, grilling, and special dinner preparations.",
-    category: "mutton",
-    pricePerKg: 680,
-    image: "https://images.unsplash.com/photo-1722718461839-13a06db541c3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHw0fHxtZWF0JTIwcHJvZHVjdHN8ZW58MHx8fHwxNzU1NTY3Mjk4fDA&ixlib=rb-4.1.0&q=85",
-    rating: 4.8,
-    isNew: true,
-    discount: null,
-    tags: ["Ribs", "Tender", "BBQ", "Grilling", "Premium"],
-    weights: [
-      { weight: "500g", price: 340 },
-      { weight: "1kg", price: 680 },
-      { weight: "1.5kg", price: 1020 }
     ]
   },
   {
