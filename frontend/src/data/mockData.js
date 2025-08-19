@@ -32,8 +32,10 @@ export const mockProducts = [
       "Cook at medium heat to retain tenderness",
       "Internal temperature should reach 75°C"
     ]
-  }
-  id: 2,
+  }, // 👈 missing comma fixed
+
+  {
+    id: 2,
     name: "Premium Chicken Breast",
     description: "Fresh, tender chicken breast cuts perfect for grilling, roasting, or curry preparations. Skinless and boneless for convenience.",
     category: "chicken",
