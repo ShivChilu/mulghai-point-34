@@ -376,4 +376,5 @@ body {
 /* Safe area for iOS mobile devices */
 .h-safe-bottom {
   height: env(safe-area-inset-bottom, 0px);
+  min-height: 20px; /* Minimum padding for non-iOS devices */
 }
