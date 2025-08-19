@@ -373,6 +373,17 @@ body {
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
 }
 
+/* Mobile bottom navigation spacing */
+.mobile-bottom-spacer {
+  height: 80px; /* Height for mobile bottom nav + safe area */
+}
+
+@media (min-width: 768px) {
+  .mobile-bottom-spacer {
+    height: 0px !important; /* No spacing needed on desktop */
+  }
+}
+
 /* Safe area for iOS mobile devices */
 .h-safe-bottom {
   height: env(safe-area-inset-bottom, 0px);
