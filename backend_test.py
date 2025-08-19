@@ -139,7 +139,7 @@ def test_cors_headers():
     print("\n🧪 Testing CORS configuration...")
     try:
         # Test preflight request
-        response = requests.options(
+        preflight_response = requests.options(
             f"{API_BASE_URL}/status",
             headers={
                 "Origin": "https://example.com",
@@ -149,18 +149,37 @@ def test_cors_headers():
             timeout=10
         )
         
-        print(f"   Preflight Status Code: {response.status_code}")
+        print(f"   Preflight Status Code: {preflight_response.status_code}")
         
-        # Check CORS headers in a regular request
-        response = requests.get(f"{API_BASE_URL}/", timeout=10)
-        cors_headers = {
-            key: value for key, value in response.headers.items() 
+        # Check CORS headers in preflight response
+        preflight_cors_headers = {
+            key: value for key, value in preflight_response.headers.items() 
             if key.lower().startswith('access-control')
         }
         
-        print(f"   CORS Headers: {cors_headers}")
+        print(f"   Preflight CORS Headers: {preflight_cors_headers}")
         
-        if 'access-control-allow-origin' in [h.lower() for h in response.headers.keys()]:
+        # Test actual request with Origin header
+        actual_response = requests.get(
+            f"{API_BASE_URL}/", 
+            headers={"Origin": "https://example.com"},
+            timeout=10
+        )
+        
+        actual_cors_headers = {
+            key: value for key, value in actual_response.headers.items() 
+            if key.lower().startswith('access-control')
+        }
+        
+        print(f"   Actual Request CORS Headers: {actual_cors_headers}")
+        
+        # Check if CORS is working (either in preflight or actual response)
+        has_cors = (
+            'access-control-allow-origin' in [h.lower() for h in preflight_response.headers.keys()] or
+            'access-control-allow-origin' in [h.lower() for h in actual_response.headers.keys()]
+        )
+        
+        if has_cors:
             print("   ✅ CORS - PASSED")
             return True
         else:
