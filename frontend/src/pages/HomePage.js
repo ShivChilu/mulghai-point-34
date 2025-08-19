@@ -262,8 +262,8 @@ const HomePage = () => {
         {/* HD Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1597417321971-45e034f7a993" 
-            alt="Premium butcher shop interior" 
+            src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba" 
+            alt="Premium fresh meat display" 
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/50"></div>
