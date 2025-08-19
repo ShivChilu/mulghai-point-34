@@ -58,7 +58,7 @@ const MobileBottomNav = ({ activeSection, scrollToSection, cartItemCount, onCart
               <div className="relative">
                 <Icon className={`w-5 h-5 mb-1 ${isActive ? 'text-white' : ''}`} />
                 {item.showBadge && item.badgeCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-400 text-white text-xs min-w-[18px] h-4 flex items-center justify-center rounded-full animate-pulse border-2 border-white shadow-lg font-bold">
+                  <Badge className="absolute -top-1 -right-1 bg-red-600 hover:bg-red-500 text-white text-xs min-w-[22px] h-5 flex items-center justify-center rounded-full animate-pulse border-3 border-white shadow-xl font-black z-20">
                     {item.badgeCount}
                   </Badge>
                 )}
