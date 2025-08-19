@@ -268,6 +268,11 @@ body {
   .product-card:hover {
     transform: none;
   }
+  
+  /* Add bottom padding for mobile nav */
+  body {
+    padding-bottom: 90px;
+  }
 }
 
 /* Additional Butcher Shop Elements */
@@ -358,4 +363,70 @@ body {
 .btn-premium:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+}
+
+/* Dark Mode Enhanced Colors for Better Visibility */
+[data-theme="dark"] .text-slate-700 {
+  color: #e2e8f0 !important; /* Light glowing text */
+  text-shadow: 0 0 2px rgba(226, 232, 240, 0.3);
+}
+
+[data-theme="dark"] .text-slate-600 {
+  color: #cbd5e1 !important; /* Light glowing text */
+  text-shadow: 0 0 2px rgba(203, 213, 225, 0.3);
+}
+
+[data-theme="dark"] .text-slate-500 {
+  color: #94a3b8 !important; /* Light glowing text */
+  text-shadow: 0 0 2px rgba(148, 163, 184, 0.3);
+}
+
+[data-theme="dark"] .text-slate-800 {
+  color: #f8fafc !important; /* Very light glowing text */
+  text-shadow: 0 0 3px rgba(248, 250, 252, 0.5);
+}
+
+[data-theme="dark"] .text-slate-900 {
+  color: #ffffff !important; /* White glowing text */
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+/* Specific fixes for cart modal in dark mode */
+[data-theme="dark"] .bg-white {
+  background-color: #1e293b !important;
+}
+
+[data-theme="dark"] .bg-white\/80 {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+}
+
+[data-theme="dark"] .border-amber-100 {
+  border-color: #475569 !important;
+}
+
+/* Fix product modal weight selection buttons in dark mode */
+[data-theme="dark"] .bg-white.dark\:bg-slate-800 {
+  background-color: #475569 !important;
+  color: #f1f5f9 !important;
+  border-color: #64748b !important;
+}
+
+[data-theme="dark"] .bg-white.dark\:bg-slate-800:hover {
+  background-color: #64748b !important;
+  color: #ffffff !important;
+}
+
+/* Enhanced glow effects for dark mode text */
+[data-theme="dark"] .text-glow {
+  text-shadow: 0 0 6px rgba(245, 158, 11, 0.6), 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+[data-theme="dark"] .price-glow {
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.8), 0 0 16px rgba(245, 158, 11, 0.6);
+  color: #fbbf24 !important;
+}
+
+/* Safe area for iOS mobile devices */
+.h-safe-bottom {
+  height: env(safe-area-inset-bottom, 0px);
 }
