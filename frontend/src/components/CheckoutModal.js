@@ -122,7 +122,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
                     <div className="mt-3 p-2.5 bg-amber-50 rounded-xl border border-amber-100">
                       <p className="text-amber-700 text-sm flex items-center space-x-2">
                         <Truck className="w-4 h-4" />
-                        <span>Add ₹{500 - cartTotal} more for free delivery!</span>
+                        <span>Add ₹{150 - cartTotal} more for free delivery!</span>
                       </p>
                     </div>
                   )}
