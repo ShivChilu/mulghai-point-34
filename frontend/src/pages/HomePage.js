@@ -333,19 +333,19 @@ const HomePage = () => {
 
             {/* Enhanced Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="flip-in flip-card product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'900ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'900ms'}}>
                 <Clock className="w-8 h-8 md:w-10 md:h-10 text-amber-600 mx-auto mb-3 md:mb-4 float-1" />
                 <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 butcher-title">Fresh Daily</h3>
                 <p className="text-slate-600 text-sm md:text-base">Delivered fresh every day from trusted farms</p>
               </div>
               
-              <div className="flip-in flip-card product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'1100ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'1100ms'}}>
                 <Truck className="w-8 h-8 md:w-10 md:h-10 text-amber-600 mx-auto mb-3 md:mb-4 float-2" />
                 <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 butcher-title">Fast Delivery</h3>
                 <p className="text-slate-600 text-sm md:text-base">Quick and reliable service within 60 minutes</p>
               </div>
               
-              <div className="flip-in flip-card product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'1300ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-4 md:p-6 backdrop-blur-sm hover-lift mobile-card" style={{animationDelay:'1300ms'}}>
                 <Award className="w-8 h-8 md:w-10 md:h-10 text-amber-600 mx-auto mb-3 md:mb-4 float-3" />
                 <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 butcher-title">Premium Quality</h3>
                 <p className="text-slate-600 text-sm md:text-base">Hand-selected finest cuts and premium meat</p>
