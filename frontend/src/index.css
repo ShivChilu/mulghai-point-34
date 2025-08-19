@@ -241,6 +241,23 @@ body {
     margin-bottom: 0.75rem !important;
   }
   
+  /* Modal fixes for mobile */
+  .fixed.inset-0 {
+    position: fixed !important;
+  }
+  
+  /* Ensure modals work properly on mobile */
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+  
+  /* Safe area for checkout buttons */
+  .checkout-button-area {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+  
   /* Add bottom padding for mobile nav */
   body {
     padding-bottom: 90px;
