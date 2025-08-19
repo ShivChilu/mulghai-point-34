@@ -239,12 +239,12 @@ const HomePage = () => {
               {/* Cart Button */}
               <Button 
                 onClick={() => setIsCartOpen(true)} 
-                className="relative btn-premium rounded-full px-6 py-3 shadow-lg hover-lift"
+                className="relative btn-premium rounded-full px-4 py-3 shadow-lg hover-lift"
               >
-                <ShoppingCart className="w-5 h-5 mr-2" />
-                <span className="hidden sm:inline font-semibold">Cart</span>
+                <ShoppingCart className="w-5 h-5" />
+                <span className="hidden sm:inline font-semibold ml-2">Cart</span>
                 {getCartItemCount() > 0 && (
-                  <Badge className="absolute -top-1 -right-1 bg-red-600 hover:bg-red-500 text-white text-xs min-w-[24px] h-6 flex items-center justify-center rounded-full animate-pulse border-3 border-white shadow-xl font-black z-10">
+                  <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-red-600 hover:bg-red-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-pulse border-2 border-white shadow-xl font-black z-10">
                     {getCartItemCount()}
                   </Badge>
                 )}
