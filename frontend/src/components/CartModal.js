@@ -57,7 +57,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
                     <Zap className="w-4 h-4 text-amber-600" />
                     <span className="text-amber-700 text-sm font-medium">Smart Tip</span>
                   </div>
-                  <p className="text-amber-700 text-sm">Add ₹{500 - getCartTotal()} more to unlock FREE delivery and save ₹50!</p>
+                  <p className="text-amber-700 text-sm">Add ₹{150 - getCartTotal()} more to unlock FREE delivery and save ₹25!</p>
                 </div>
               )}
 
