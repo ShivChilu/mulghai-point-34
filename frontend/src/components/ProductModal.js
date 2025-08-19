@@ -124,8 +124,8 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
         
         <div className="flex-1 overflow-y-auto">
 
-        <div className="p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
+        <div className="p-4 md:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 mb-6 md:mb-10">
             {/* Product Image */}
             <div className="relative">
               <div className="relative overflow-hidden rounded-3xl shadow-2xl">
