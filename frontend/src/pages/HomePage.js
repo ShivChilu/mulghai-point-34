@@ -114,8 +114,10 @@ const HomePage = () => {
     }
     
     toast({ 
-      title: 'Added to Cart 🛒', 
-      description: `${product.name} (${weight}) added successfully!` 
+      title: '✅ Added to Cart!', 
+      description: `${product.name} (${weight}) added successfully!`,
+      duration: 1000,
+      className: "toast-success"
     });
   };
 
