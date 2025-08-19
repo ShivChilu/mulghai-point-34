@@ -327,6 +327,25 @@ body {
   letter-spacing: 0.5px;
 }
 
+/* Typewriter Animation Mobile Fix */
+.caret {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+@media (max-width: 640px) {
+  .mobile-title {
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+    white-space: nowrap;
+    overflow: visible;
+  }
+  
+  .caret {
+    font-size: 2rem !important;
+  }
+}
+
 /* Logo Enhancement */
 .logo-glow {
   filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
