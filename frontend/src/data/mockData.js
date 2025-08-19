@@ -1,6 +1,6 @@
 // Comprehensive product data for Mulghai Point - Premium Butcher Shop
 export const mockProducts = [
-  // CHICKEN PRODUCTS (7 items - removed chicken keema and chicken sausages)
+  // CHICKEN PRODUCTS (6 items - removed chicken keema, chicken sausages, and chicken liver)
   {
     id: 1,
     name: "Premium Chicken Breast",
@@ -8,7 +8,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 320,
     image: "https://images.unsplash.com/photo-1682991136736-a2b44623eeba?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwzfHxjaGlja2VuJTIwY3V0c3xlbnwwfHx8fDE3NTU1OTcyOTN8MA&ixlib=rb-4.1.0&q=85",
-    rating: 4.8,
     isNew: true,
     discount: null,
     tags: ["Fresh", "Boneless", "Premium", "Protein Rich", "Grilled"],
@@ -25,7 +24,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 280,
     image: "https://images.unsplash.com/photo-1629966207968-16b1027bed09?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHxjaGlja2VuJTIwY3V0c3xlbnwwfHx8fDE3NTU1OTcyOTN8MA&ixlib=rb-4.1.0&q=85",
-    rating: 4.7,
     isNew: false,
     discount: 10,
     tags: ["Fresh", "Juicy", "Bone-in", "Traditional", "Curry"],
@@ -42,7 +40,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 260,
     image: "https://images.unsplash.com/photo-1718421670841-19501b4a9e03?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHw0fHxjaGlja2VuJTIwY3V0c3xlbnwwfHx8fDE3NTU1OTcyOTN8MA&ixlib=rb-4.1.0&q=85",
-    rating: 4.6,
     isNew: false,
     discount: null,
     tags: ["Wings", "BBQ", "Tandoor", "Spicy", "Party"],
@@ -59,7 +56,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 270,
     image: "https://images.unsplash.com/photo-1690983323238-0b91789e1b5a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
-    rating: 4.7,
     isNew: false,
     discount: 5,
     tags: ["Drumsticks", "Skin-on", "Tandoor", "Flavorful"],
@@ -76,7 +72,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 240,
     image: "https://images.unsplash.com/photo-1690983321750-ad6f6d59a84b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwyfHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
-    rating: 4.8,
     isNew: false,
     discount: null,
     tags: ["Whole", "Cleaned", "Roasting", "Biryani", "Traditional"],
@@ -93,7 +88,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 250,
     image: "https://images.unsplash.com/photo-1690983322025-aab4f95a0269?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
-    rating: 4.6,
     isNew: false,
     discount: null,
     tags: ["Curry", "Mixed", "Traditional", "Home Style", "Bone-in"],
@@ -110,7 +104,6 @@ export const mockProducts = [
     category: "chicken",
     pricePerKg: 350,
     image: "https://images.unsplash.com/photo-1613454320437-0c228c8b1723?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxyYXclMjBtZWF0fGVufDB8fHx8MTc1NTU5NzMwOHww&ixlib=rb-4.1.0&q=85",
-    rating: 4.9,
     isNew: true,
     discount: null,
     tags: ["Boneless", "Cubes", "Tikka", "Kabab", "Premium"],
@@ -118,23 +111,6 @@ export const mockProducts = [
       { weight: "250g", price: 88 },
       { weight: "500g", price: 175 },
       { weight: "1kg", price: 350 }
-    ]
-  },
-  {
-    id: 8,
-    name: "Chicken Liver",
-    description: "Fresh chicken liver, rich in iron and vitamins. Perfect for traditional preparations and health-conscious choices.",
-    category: "chicken",
-    pricePerKg: 180,
-    image: "https://images.pexels.com/photos/5490707/pexels-photo-5490707.jpeg",
-    rating: 4.4,
-    isNew: false,
-    discount: null,
-    tags: ["Liver", "Iron Rich", "Healthy", "Traditional", "Vitamins"],
-    weights: [
-      { weight: "250g", price: 45 },
-      { weight: "500g", price: 90 },
-      { weight: "1kg", price: 180 }
     ]
   },
 
@@ -146,7 +122,6 @@ export const mockProducts = [
     category: "mutton",
     pricePerKg: 650,
     image: "https://images.unsplash.com/photo-1717980651515-7796a793002f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwzfHxtdXR0b258ZW58MHx8fHwxNzU1NTk3MzAzfDA&ixlib=rb-4.1.0&q=85",
-    rating: 4.9,
     isNew: false,
     discount: null,
     tags: ["Premium", "Leg", "Tender", "Biryani", "Special"],
@@ -163,7 +138,6 @@ export const mockProducts = [
     category: "mutton",
     pricePerKg: 620,
     image: "https://images.pexels.com/photos/112781/pexels-photo-112781.jpeg",
-    rating: 4.7,
     isNew: false,
     discount: 8,
     tags: ["Shoulder", "Bone-in", "Slow-cook", "Curry", "Traditional"],
@@ -180,7 +154,6 @@ export const mockProducts = [
     category: "mutton",
     pricePerKg: 580,
     image: "https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg",
-    rating: 4.8,
     isNew: false,
     discount: null,
     tags: ["Keema", "Minced", "Kabab", "Lucknowi", "Authentic"],
@@ -197,7 +170,6 @@ export const mockProducts = [
     category: "mutton",
     pricePerKg: 720,
     image: "https://images.unsplash.com/photo-1659881981676-33ab127152c0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxtZWF0JTIwcHJvZHVjdHN8ZW58MHx8fHwxNzU1NTk3Mjk4fDA&ixlib=rb-4.1.0&q=85",
-    rating: 4.9,
     isNew: true,
     discount: 5,
     tags: ["Boneless", "Premium", "Quick Cook", "Modern", "Clean"],
@@ -216,7 +188,6 @@ export const mockProducts = [
     category: "fish",
     pricePerKg: 450,
     image: "https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=800&q=80",
-    rating: 4.6,
     isNew: false,
     discount: null,
     tags: ["Fish", "Fresh", "Pomfret", "Bengali", "Curry"],
@@ -235,7 +206,6 @@ export const mockProducts = [
     category: "processed",
     pricePerKg: 420,
     image: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80",
-    rating: 4.7,
     isNew: true,
     discount: 10,
     tags: ["Kebab", "Ready-to-cook", "Spiced", "Grilled", "Party"],
