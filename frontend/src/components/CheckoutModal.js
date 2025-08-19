@@ -54,24 +54,8 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
 
     await new Promise(resolve => setTimeout(resolve, 1200));
 
-    let message = `🛒 NEW ORDER 🛒\n\n`;
-    message += `*Customer Details:*\n`;
-    message += `Name: ${formData.name}\n`;
-    message += `Phone: ${formData.phone}\n`;
-    message += `Address: ${formData.address}\n`;
-    message += `Pincode: ${formData.pincode} (${serviceablePincodes[formData.pincode]})\n`;
-    if (formData.instructions.trim()) message += `Special Instructions: ${formData.instructions}\n`;
-
-    message += `\n*Order Items:*\n`;
-    cart.forEach(item => { message += `• ${item.name} (${item.weight}) × ${item.quantity} = ₹${item.price * item.quantity}\n`; });
-
-    message += `\n*Order Summary:*\n`;
-    message += `Subtotal: ₹${cartTotal}\n`;
-    if (deliveryCharge > 0) message += `Delivery Charge: ₹${deliveryCharge}\n`;
-    message += `*Total Amount: ₹${totalWithDelivery}*\n`;
-    message += `Payment: Cash on Delivery\n`;
-    message += `\nPlease confirm this order. Thank you! 🙏`;
-
+    // Generate enhanced WhatsApp message with emojis
+    const message = whatsappTemplates.orderMessage(cart, formData, totalWithDelivery);
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/917986955634?text=${encodedMessage}`, '_blank');
 
