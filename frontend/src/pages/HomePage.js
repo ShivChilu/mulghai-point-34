@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Sparkles, Drumstick, Shield, Leaf, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -28,17 +28,6 @@ const HomePage = () => {
   useEffect(() => {
     const t = setTimeout(() => setShowIntro(false), 1400);
     return () => clearTimeout(t);
-  }, []);
-
-  // Click outside to close suggestions
-  useEffect(() => {
-    const onDocClick = (e) => {
-      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) {
-        setShowSuggestions(false);
-      }
-    };
-    document.addEventListener('click', onDocClick);
-    return () => document.removeEventListener('click', onDocClick);
   }, []);
 
   // Enhanced typewriter effect
@@ -92,28 +81,6 @@ const HomePage = () => {
 
   useEffect(() => { filterProducts(); }, [selectedCategory, searchQuery, products]);
 
-  const buildSuggestions = (q) => {
-    let items = products.map(p => ({ 
-      id: p.id, 
-      name: p.name, 
-      subtitle: `${p.category} • ₹${p.pricePerKg}/kg`, 
-      image: p.image, 
-      tags: p.tags || [] 
-    }));
-    
-    if (q && q.trim()) {
-      const term = q.toLowerCase();
-      items = items.filter(p =>
-        p.name.toLowerCase().includes(term) ||
-        (p.subtitle || '').toLowerCase().includes(term) ||
-        (p.tags && p.tags.some(t => (t || '').toLowerCase().includes(term)))
-      );
-    }
-    return items.slice(0, 8);
-  };
-
-  useEffect(() => { setSuggestions(buildSuggestions(searchQuery)); }, [searchQuery, products]);
-
   const filterProducts = () => {
     let filtered = products;
     if (selectedCategory !== 'all') filtered = filtered.filter(product => product.category === selectedCategory);
@@ -162,7 +129,6 @@ const HomePage = () => {
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
-    setShowSuggestions(false);
     
     // Special handling for home section
     if (sectionId === 'home') {
@@ -198,14 +164,8 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection]);
 
-  const handleSuggestionSelect = (name) => {
-    setSearchQuery(name);
-    setShowSuggestions(false);
-    scrollToSection('products');
-  };
-
   const SearchBox = ({ mobile = false }) => (
-    <div className="relative w-full" ref={searchWrapRef}>
+    <div className="relative w-full">
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600/70 w-5 h-5 z-10" />
       <Input
         type="text"
@@ -214,53 +174,20 @@ const HomePage = () => {
         autoComplete="off"
         spellCheck={false}
         onChange={(e) => setSearchQuery(e.target.value)}
-        onFocus={() => { 
-          setShowSuggestions(true); 
-          setSuggestions(buildSuggestions(searchQuery)); 
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && suggestions.length > 0) {
-            e.preventDefault();
-            handleSuggestionSelect(suggestions[0].name);
-          }
-        }}
-        className="pl-12 pr-4 py-3 bg-white/90 dark:bg-slate-800/90 border border-amber-200 dark:border-slate-600 rounded-full text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:border-amber-400 focus:ring-0 backdrop-blur-sm transition-all duration-300"
+        className="pl-12 pr-4 py-3 bg-white/90 border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-0 backdrop-blur-sm transition-all duration-300"
       />
-      {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute left-0 right-0 top-full mt-2 bg-white/95 dark:bg-slate-800/95 border border-amber-100 dark:border-slate-600 rounded-xl shadow-xl max-h-64 overflow-auto z-40 backdrop-blur-sm">
-          {suggestions.map(s => (
-            <button
-              key={s.id}
-              className="w-full text-left px-4 py-3 hover:bg-amber-50 dark:hover:bg-slate-700 flex items-center space-x-3 transition-all duration-200"
-              onMouseDown={() => handleSuggestionSelect(s.name)}
-              onTouchStart={() => handleSuggestionSelect(s.name)}
-            >
-              <img src={s.image} alt={s.name} className="w-10 h-10 rounded-lg object-cover shadow-sm" />
-              <div className="min-w-0 flex-1">
-                <div className="font-medium text-slate-800 dark:text-slate-200 truncate">{s.name}</div>
-                <div className="text-sm text-slate-500 dark:text-slate-400 truncate">{s.subtitle}</div>
-              </div>
-              <div className="ml-auto flex items-center space-x-1 text-amber-600 text-xs">
-                <Sparkles className="w-3.5 h-3.5" />
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 
   return (
     <div className="min-h-screen transition-all duration-500" 
          style={{ 
-           background: theme === 'light' 
-             ? 'linear-gradient(135deg, #fefaf6 0%, #fff8f0 50%, #fef3e2 100%)'
-             : 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
+           background: 'linear-gradient(135deg, #fefaf6 0%, #fff8f0 50%, #fef3e2 100%)'
          }}>
       
       {/* Intro Splash */}
       {showIntro && (
-        <div className="fixed inset-0 z-[60] bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <div className="fixed inset-0 z-[60] bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
           <div className="splash-enter text-center">
             <div className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-2xl logo-glow">
               <Drumstick className="w-10 h-10 text-white" />
@@ -274,7 +201,7 @@ const HomePage = () => {
       )}
 
       {/* Enhanced Header */}
-      <header className="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-100 dark:border-slate-700 wood-texture">
+      <header className="bg-white/85 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-100 wood-texture">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -285,7 +212,7 @@ const HomePage = () => {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent butcher-title">
                   Mulghai Point
                 </h1>
-                <p className="text-sm text-amber-600/80 dark:text-amber-400/80 premium-text flex items-center gap-1">
+                <p className="text-sm text-amber-600/80 premium-text flex items-center gap-1">
                   <Shield className="w-3 h-3" />
                   Premium Fresh Meat
                 </p>
@@ -298,23 +225,10 @@ const HomePage = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full bg-amber-100 dark:bg-slate-700 hover:bg-amber-200 dark:hover:bg-slate-600 transition-all duration-300 hover-glow"
-                aria-label="Toggle theme"
-              >
-                {theme === 'light' ? (
-                  <Moon className="w-5 h-5 text-amber-700" />
-                ) : (
-                  <Sun className="w-5 h-5 text-amber-400" />
-                )}
-              </button>
-
               {/* Phone Number - Desktop */}
               <a 
                 href="tel:6284307484" 
-                className="hidden md:flex items-center space-x-2 text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 transition-colors px-4 py-2 rounded-full bg-amber-50 dark:bg-slate-700 hover-lift"
+                className="hidden md:flex items-center space-x-2 text-amber-700 hover:text-amber-800 transition-colors px-4 py-2 rounded-full bg-amber-50 hover-lift"
               >
                 <Phone className="w-4 h-4" />
                 <span className="text-sm font-medium">6284307484</span>
@@ -322,7 +236,7 @@ const HomePage = () => {
 
               {/* Cart Button */}
               <Button 
-                onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} 
+                onClick={() => setIsCartOpen(true)} 
                 className="relative btn-premium rounded-full px-6 py-3 shadow-lg hover-lift"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
@@ -419,22 +333,22 @@ const HomePage = () => {
 
             {/* Enhanced Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'900ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'900ms'}}>
                 <Clock className="w-10 h-10 text-amber-600 mx-auto mb-4 float-1" />
                 <h3 className="text-xl font-bold mb-2 butcher-title">Fresh Daily</h3>
-                <p className="text-slate-600 dark:text-slate-300">Delivered fresh every day from trusted farms</p>
+                <p className="text-slate-600">Delivered fresh every day from trusted farms</p>
               </div>
               
-              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1100ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1100ms'}}>
                 <Truck className="w-10 h-10 text-amber-600 mx-auto mb-4 float-2" />
                 <h3 className="text-xl font-bold mb-2 butcher-title">Fast Delivery</h3>
-                <p className="text-slate-600 dark:text-slate-300">Quick and reliable service within 60 minutes</p>
+                <p className="text-slate-600">Quick and reliable service within 60 minutes</p>
               </div>
               
-              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1300ms'}}>
+              <div className="scale-in product-card bg-white/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1300ms'}}>
                 <Award className="w-10 h-10 text-amber-600 mx-auto mb-4 float-3" />
                 <h3 className="text-xl font-bold mb-2 butcher-title">Premium Quality</h3>
-                <p className="text-slate-600 dark:text-slate-300">Hand-selected finest cuts and premium meat</p>
+                <p className="text-slate-600">Hand-selected finest cuts and premium meat</p>
               </div>
             </div>
           </div>
@@ -442,7 +356,7 @@ const HomePage = () => {
       </section>
 
       {/* Enhanced Categories */}
-      <section className="py-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-y border-amber-100 dark:border-slate-600 wood-texture">
+      <section className="py-8 bg-white/80 backdrop-blur-md border-y border-amber-100 wood-texture">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-3">
             {categories.map(category => (
@@ -453,7 +367,7 @@ const HomePage = () => {
                 className={`${
                   selectedCategory === category.id 
                     ? 'btn-premium shadow-lg scale-105' 
-                    : 'border-2 border-amber-200 dark:border-slate-600 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 bg-white/50 dark:bg-slate-800/50'
+                    : 'border-2 border-amber-200 text-amber-700 hover:bg-amber-50 bg-white/50'
                 } rounded-full px-6 py-3 transition-all duration-300 hover-lift font-semibold backdrop-blur-sm`}
               >
                 <span className="mr-2">{category.icon}</span>
@@ -463,7 +377,7 @@ const HomePage = () => {
                   className={`ml-2 ${
                     selectedCategory === category.id 
                       ? 'bg-white/20 text-white' 
-                      : 'bg-amber-100 dark:bg-slate-600 text-amber-700 dark:text-amber-400'
+                      : 'bg-amber-100 text-amber-700'
                   }`}
                 >
                   {category.count}
@@ -481,16 +395,16 @@ const HomePage = () => {
             <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent butcher-title">
               Our Fresh Products
             </h3>
-            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto premium-text">
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto premium-text">
               Hand-picked premium quality meat, sourced from trusted farms and delivered fresh to your door with guaranteed quality and hygiene
             </p>
           </div>
 
           {filteredProducts.length === 0 ? (
             <div className="text-center py-20">
-              <div className="product-card bg-white/95 dark:bg-slate-800/95 rounded-3xl p-12 backdrop-blur-sm hover-lift">
+              <div className="product-card bg-white/95 rounded-3xl p-12 backdrop-blur-sm hover-lift">
                 <div className="text-6xl mb-4">🔍</div>
-                <p className="text-slate-500 dark:text-slate-400 text-xl">No products found matching your search.</p>
+                <p className="text-slate-500 text-xl">No products found matching your search.</p>
               </div>
             </div>
           ) : (
@@ -523,16 +437,10 @@ const HomePage = () => {
                   </div>
                   
                   <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors butcher-title">
-                        {product.name}
-                      </CardTitle>
-                      <div className="flex items-center space-x-1 bg-amber-100 dark:bg-amber-900 rounded-full px-3 py-1 shadow-sm">
-                        <Star className="w-4 h-4 text-amber-500 fill-current" />
-                        <span className="text-sm text-amber-700 dark:text-amber-400 font-bold">{product.rating}</span>
-                      </div>
-                    </div>
-                    <CardDescription className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 premium-text">
+                    <CardTitle className="text-xl font-bold text-slate-800 group-hover:text-amber-700 transition-colors butcher-title">
+                      {product.name}
+                    </CardTitle>
+                    <CardDescription className="text-sm text-slate-600 line-clamp-2 premium-text">
                       {product.description}
                     </CardDescription>
                   </CardHeader>
@@ -544,17 +452,17 @@ const HomePage = () => {
                           <Badge 
                             key={tag} 
                             variant="secondary" 
-                            className="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-700 font-medium"
+                            className="text-xs bg-amber-100 text-amber-700 border border-amber-200 font-medium"
                           >
                             {tag}
                           </Badge>
                         ))}
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-amber-700 dark:text-amber-400 butcher-title">
+                        <p className="text-2xl font-bold text-amber-700 butcher-title">
                           ₹{product.pricePerKg}/kg
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-xs text-slate-500">
                           Starting from ₹{Math.round(product.pricePerKg * 0.25)}
                         </p>
                       </div>
@@ -578,7 +486,7 @@ const HomePage = () => {
       </section>
 
       {/* Enhanced About Section */}
-      <section id="about" className="py-20 bg-white/80 dark:bg-slate-800/80 wood-texture">
+      <section id="about" className="py-20 bg-white/80 wood-texture">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="reveal-left">
@@ -592,7 +500,7 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="text-2xl font-bold mb-3 butcher-title">Premium Quality</h4>
-                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                    <p className="text-slate-600 text-lg premium-text">
                       Hand-selected from trusted farms, ensuring the highest quality and freshness for every cut with rigorous quality checks.
                     </p>
                   </div>
@@ -604,7 +512,7 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="text-2xl font-bold mb-3 butcher-title">Fast Delivery</h4>
-                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                    <p className="text-slate-600 text-lg premium-text">
                       Quick and reliable delivery within 60 minutes to keep your meat fresh and your meals on schedule.
                     </p>
                   </div>
@@ -616,7 +524,7 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="text-2xl font-bold mb-3 butcher-title">Local & Fresh</h4>
-                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                    <p className="text-slate-600 text-lg premium-text">
                       Sourced from local farms, supporting our community while ensuring maximum freshness and sustainability.
                     </p>
                   </div>
@@ -638,7 +546,7 @@ const HomePage = () => {
       </section>
 
       {/* Enhanced Footer */}
-      <footer id="contact" className="bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-200 py-16 border-t border-amber-100 dark:border-slate-700 wood-texture">
+      <footer id="contact" className="bg-white/95 text-slate-800 py-16 border-t border-amber-100 wood-texture">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
@@ -650,22 +558,22 @@ const HomePage = () => {
                   Mulghai Point
                 </h4>
               </div>
-              <p className="text-slate-600 dark:text-slate-300 mb-6 text-lg premium-text">
+              <p className="text-slate-600 mb-6 text-lg premium-text">
                 Your trusted partner for premium fresh meat delivery with guaranteed quality and hygiene.
               </p>
-              <div className="flex items-center space-x-3 bg-amber-50 dark:bg-slate-800 rounded-full px-6 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
-                <Phone className="w-5 h-5 text-amber-700 dark:text-amber-400" />
-                <span className="text-amber-700 dark:text-amber-400 font-bold text-lg">6284307484</span>
+              <div className="flex items-center space-x-3 bg-amber-50 rounded-full px-6 py-3 border border-amber-100 hover-lift">
+                <Phone className="w-5 h-5 text-amber-700" />
+                <span className="text-amber-700 font-bold text-lg">6284307484</span>
               </div>
             </div>
             
             <div>
-              <h5 className="text-xl font-bold mb-6 text-amber-800 dark:text-amber-400 butcher-title">Quick Links</h5>
+              <h5 className="text-xl font-bold mb-6 text-amber-800 butcher-title">Quick Links</h5>
               <ul className="space-y-3">
                 <li>
                   <button 
                     onClick={() => scrollToSection('products')} 
-                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                    className="text-slate-700 hover:text-amber-700 text-lg premium-text hover-lift inline-block"
                   >
                     🥩 Products
                   </button>
@@ -673,7 +581,7 @@ const HomePage = () => {
                 <li>
                   <button 
                     onClick={() => scrollToSection('about')} 
-                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                    className="text-slate-700 hover:text-amber-700 text-lg premium-text hover-lift inline-block"
                   >
                     ℹ️ About Us
                   </button>
@@ -681,7 +589,7 @@ const HomePage = () => {
                 <li>
                   <button 
                     onClick={() => scrollToSection('contact')} 
-                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                    className="text-slate-700 hover:text-amber-700 text-lg premium-text hover-lift inline-block"
                   >
                     📞 Contact
                   </button>
@@ -690,23 +598,23 @@ const HomePage = () => {
             </div>
             
             <div>
-              <h5 className="text-xl font-bold mb-6 text-amber-800 dark:text-amber-400 butcher-title">Delivery Areas</h5>
+              <h5 className="text-xl font-bold mb-6 text-amber-800 butcher-title">Delivery Areas</h5>
               <ul className="space-y-3">
-                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                <li className="bg-amber-50 rounded-xl px-4 py-3 border border-amber-100 hover-lift">
                   📍 LPU Campus & Vicinity
                 </li>
-                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                <li className="bg-amber-50 rounded-xl px-4 py-3 border border-amber-100 hover-lift">
                   🏘️ Phagwara City
                 </li>
-                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                <li className="bg-amber-50 rounded-xl px-4 py-3 border border-amber-100 hover-lift">
                   🌾 Domeli & Surrounding Areas
                 </li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-amber-100 dark:border-slate-700 mt-12 pt-8 text-center">
-            <p className="text-slate-500 dark:text-slate-400 text-lg premium-text">
+          <div className="border-t border-amber-100 mt-12 pt-8 text-center">
+            <p className="text-slate-500 text-lg premium-text">
               © 2024 Mulghai Point. All rights reserved. 🥩 Fresh • Premium • Hygienic Quality 🐓
             </p>
           </div>
@@ -769,7 +677,7 @@ const HomePage = () => {
         activeSection={activeSection}
         scrollToSection={scrollToSection}
         cartItemCount={getCartItemCount()}
-        onCartClick={() => { setShowSuggestions(false); setIsCartOpen(true); }}
+        onCartClick={() => setIsCartOpen(true)}
       />
     </div>
   );
