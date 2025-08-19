@@ -194,8 +194,8 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
               <p className="text-center text-slate-500 text-xs">Secure checkout • Fresh guarantee • Free cancellation</p>
             </div>
             
-            {/* Safe area for iOS */}
-            <div className="h-safe-bottom bg-white"></div>
+            {/* Safe area for iOS and mobile nav */}
+            <div className="h-4 md:h-0 bg-white mobile-bottom-spacer"></div>
           </div>
         )}
       </div>
