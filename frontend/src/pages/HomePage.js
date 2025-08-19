@@ -9,6 +9,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import ProductModal from '../components/ProductModal';
 import CartModal from '../components/CartModal';
 import CheckoutModal from '../components/CheckoutModal';
+import MobileBottomNav from '../components/MobileBottomNav';
 import { mockProducts, whatsappTemplates } from '../data/mockData';
 
 const HomePage = () => {
