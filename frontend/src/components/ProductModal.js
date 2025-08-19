@@ -105,22 +105,24 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
   const cookingTips = product.cookingTips || getDefaultCookingTips(product.category, product.name);
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white/95 backdrop-blur-md rounded-3xl max-w-5xl w-full max-h-[95vh] overflow-y-auto border border-amber-100 shadow-2xl">
-        <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-amber-100 p-6 flex justify-between items-center rounded-t-3xl">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-0 md:p-4">
+      <div className="bg-white w-full h-full md:max-w-5xl md:w-full md:max-h-[95vh] md:rounded-3xl overflow-hidden border-0 md:border border-amber-100 shadow-2xl flex flex-col">
+        <div className="bg-white/95 backdrop-blur-md border-b border-amber-100 p-4 md:p-6 flex justify-between items-center md:rounded-t-3xl flex-shrink-0">
           <div>
-            <h2 className="text-3xl font-bold text-slate-800 butcher-title">{product.name}</h2>
-            <p className="text-amber-600 premium-text">Premium Quality • Fresh Daily</p>
+            <h2 className="text-xl md:text-3xl font-bold text-slate-800 butcher-title">{product.name}</h2>
+            <p className="text-amber-600 premium-text text-sm md:text-base">Premium Quality • Fresh Daily</p>
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={onClose}
-            className="hover:bg-rose-50 rounded-full p-3"
+            className="hover:bg-rose-50 rounded-full p-2 md:p-3"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 md:w-6 md:h-6" />
           </Button>
         </div>
+        
+        <div className="flex-1 overflow-y-auto">
 
         <div className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
