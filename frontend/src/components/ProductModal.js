@@ -122,37 +122,35 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
           </Button>
         </div>
         
-        <div className="flex-1 overflow-y-auto">
-
-        <div className="p-4 md:p-8">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 mb-6 md:mb-10">
             {/* Product Image */}
             <div className="relative">
-              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+              <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
                 <img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-96 object-cover hover:scale-105 transition-transform duration-700"
+                  className="w-full h-64 md:h-96 object-cover hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
               
               {product.isNew && (
-                <Badge className="absolute top-4 left-4 bg-emerald-500 text-white px-4 py-2 font-bold shadow-lg animate-pulse">
+                <Badge className="absolute top-4 left-4 bg-emerald-500 text-white px-3 md:px-4 py-1 md:py-2 font-bold shadow-lg animate-pulse text-xs md:text-sm">
                   ✨ New Arrival
                 </Badge>
               )}
               {product.discount && (
-                <Badge className="absolute top-4 right-4 bg-rose-500 text-white px-4 py-2 font-bold shadow-lg">
+                <Badge className="absolute top-4 right-4 bg-rose-500 text-white px-3 md:px-4 py-1 md:py-2 font-bold shadow-lg text-xs md:text-sm">
                   🔥 {product.discount}% OFF
                 </Badge>
               )}
               
               <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-amber-100">
+                <div className="bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 shadow-xl border border-amber-100">
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-right w-full">
-                      <p className="text-2xl font-bold text-amber-700 butcher-title">₹{product.pricePerKg}/kg</p>
+                      <p className="text-xl md:text-2xl font-bold text-amber-700 butcher-title">₹{product.pricePerKg}/kg</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -168,65 +166,65 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
 
             {/* Product Details */}
             <div>
-              <div className="mb-8">
-                <p className="text-slate-600 mb-6 leading-relaxed text-lg premium-text">
+              <div className="mb-6 md:mb-8">
+                <p className="text-slate-600 mb-4 md:mb-6 leading-relaxed text-base md:text-lg premium-text">
                   {product.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
                   {product.tags.map(tag => (
-                    <Badge key={tag} variant="outline" className="border-amber-200 text-amber-700 hover-lift px-3 py-1">
+                    <Badge key={tag} variant="outline" className="border-amber-200 text-amber-700 hover-lift px-2 md:px-3 py-1 text-xs">
                       {tag}
                     </Badge>
                   ))}
                 </div>
 
                 {/* Quality Indicators */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center p-4 bg-emerald-50 rounded-xl hover-lift">
-                    <Shield className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
+                <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
+                  <div className="text-center p-3 md:p-4 bg-emerald-50 rounded-lg md:rounded-xl hover-lift">
+                    <Shield className="w-5 h-5 md:w-6 md:h-6 text-emerald-600 mx-auto mb-2" />
                     <p className="text-xs font-medium text-emerald-700">100% Fresh</p>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-xl hover-lift">
-                    <Package className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                  <div className="text-center p-3 md:p-4 bg-blue-50 rounded-lg md:rounded-xl hover-lift">
+                    <Package className="w-5 h-5 md:w-6 md:h-6 text-blue-600 mx-auto mb-2" />
                     <p className="text-xs font-medium text-blue-700">Hygienic</p>
                   </div>
-                  <div className="text-center p-4 bg-green-50 rounded-xl hover-lift">
-                    <Leaf className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                  <div className="text-center p-3 md:p-4 bg-green-50 rounded-lg md:rounded-xl hover-lift">
+                    <Leaf className="w-5 h-5 md:w-6 md:h-6 text-green-600 mx-auto mb-2" />
                     <p className="text-xs font-medium text-green-700">Antibiotic-Free</p>
                   </div>
                 </div>
               </div>
 
               {/* Weight Selection */}
-              <Card className="mb-8 product-card border-2 border-amber-200">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl text-slate-800 butcher-title flex items-center gap-2">
-                    <Award className="w-5 h-5 text-amber-600" />
+              <Card className="mb-6 md:mb-8 product-card border-2 border-amber-200">
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="text-lg md:text-xl text-slate-800 butcher-title flex items-center gap-2">
+                    <Award className="w-4 h-4 md:w-5 md:h-5 text-amber-600" />
                     Select Quantity
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
                     {product.weights.map((weightOption) => (
                       <Button
                         key={weightOption.weight}
                         variant={selectedWeight.weight === weightOption.weight ? "default" : "outline"}
                         onClick={() => setSelectedWeight(weightOption)}
-                        className={`flex flex-col p-6 h-auto transition-all duration-300 hover-lift ${
+                        className={`flex flex-col p-4 md:p-6 h-auto transition-all duration-300 hover-lift text-xs md:text-base ${
                           selectedWeight.weight === weightOption.weight
                             ? "btn-premium shadow-lg scale-105 text-white"
                             : "border-2 border-amber-200 hover:bg-amber-50 bg-white text-slate-800"
                         }`}
                       >
-                        <span className={`font-bold text-lg ${
+                        <span className={`font-bold text-sm md:text-lg ${
                           selectedWeight.weight === weightOption.weight 
                             ? "text-white" 
                             : "text-slate-800"
                         }`}>
                           {weightOption.weight}
                         </span>
-                        <span className={`text-sm opacity-90 ${
+                        <span className={`text-xs md:text-sm opacity-90 ${
                           selectedWeight.weight === weightOption.weight 
                             ? "text-white" 
                             : "text-amber-700"
@@ -237,14 +235,14 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
                     ))}
                   </div>
                   
-                  <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200">
+                  <div className="bg-amber-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-amber-200">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-slate-700 font-medium">Selected:</span>
-                      <span className="font-bold text-xl text-amber-700 butcher-title">
+                      <span className="text-slate-700 font-medium text-sm md:text-base">Selected:</span>
+                      <span className="font-bold text-lg md:text-xl text-amber-700 butcher-title">
                         {selectedWeight.weight} - ₹{selectedWeight.price}
                       </span>
                     </div>
-                    <div className="text-sm text-slate-600 premium-text">
+                    <div className="text-xs md:text-sm text-slate-600 premium-text">
                       Price per kg: ₹{product.pricePerKg} • Category: {product.category}
                     </div>
                   </div>
@@ -254,7 +252,7 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
               {/* Add to Cart Button */}
               <Button 
                 onClick={handleAddToCart}
-                className="w-full btn-premium py-8 text-xl font-bold rounded-2xl shadow-xl hover-lift"
+                className="w-full btn-premium py-6 md:py-8 text-lg md:text-xl font-bold rounded-xl md:rounded-2xl shadow-xl hover-lift"
                 size="lg"
               >
                 🛒 Add to Cart - ₹{selectedWeight.price}
@@ -264,36 +262,36 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
 
           {/* Additional Information Tabs */}
           <Tabs defaultValue="nutrition" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8 bg-amber-50 rounded-2xl p-1">
-              <TabsTrigger value="nutrition" className="rounded-xl font-semibold text-slate-700">Nutrition</TabsTrigger>
-              <TabsTrigger value="benefits" className="rounded-xl font-semibold text-slate-700">Benefits</TabsTrigger>
-              <TabsTrigger value="cooking" className="rounded-xl font-semibold text-slate-700">Cooking Tips</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-amber-50 rounded-xl md:rounded-2xl p-1">
+              <TabsTrigger value="nutrition" className="rounded-lg md:rounded-xl font-semibold text-slate-700 text-sm md:text-base">Nutrition</TabsTrigger>
+              <TabsTrigger value="benefits" className="rounded-lg md:rounded-xl font-semibold text-slate-700 text-sm md:text-base">Benefits</TabsTrigger>
+              <TabsTrigger value="cooking" className="rounded-lg md:rounded-xl font-semibold text-slate-700 text-sm md:text-base">Cooking Tips</TabsTrigger>
             </TabsList>
             
             <TabsContent value="nutrition">
               <Card className="product-card border-2 border-emerald-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
-                    <Award className="w-6 h-6 text-emerald-600" />
+                  <CardTitle className="flex items-center space-x-3 text-lg md:text-xl butcher-title text-slate-800">
+                    <Award className="w-5 h-5 md:w-6 md:h-6 text-emerald-600" />
                     <span>Nutritional Information</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-emerald-50 rounded-2xl hover-lift">
-                      <div className="text-3xl font-bold text-emerald-600 mb-2 butcher-title">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                    <div className="text-center p-4 md:p-6 bg-emerald-50 rounded-xl md:rounded-2xl hover-lift">
+                      <div className="text-2xl md:text-3xl font-bold text-emerald-600 mb-2 butcher-title">
                         {nutritionalInfo.protein}
                       </div>
                       <div className="text-sm text-slate-600 font-medium">Protein</div>
                     </div>
-                    <div className="text-center p-6 bg-blue-50 rounded-2xl hover-lift">
-                      <div className="text-3xl font-bold text-blue-600 mb-2 butcher-title">
+                    <div className="text-center p-4 md:p-6 bg-blue-50 rounded-xl md:rounded-2xl hover-lift">
+                      <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2 butcher-title">
                         {nutritionalInfo.fat}
                       </div>
                       <div className="text-sm text-slate-600 font-medium">Fat</div>
                     </div>
-                    <div className="text-center p-6 bg-purple-50 rounded-2xl hover-lift">
-                      <div className="text-3xl font-bold text-purple-600 mb-2 butcher-title">
+                    <div className="text-center p-4 md:p-6 bg-purple-50 rounded-xl md:rounded-2xl hover-lift">
+                      <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2 butcher-title">
                         {nutritionalInfo.calories}
                       </div>
                       <div className="text-sm text-slate-600 font-medium">Calories</div>
@@ -306,19 +304,19 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
             <TabsContent value="benefits">
               <Card className="product-card border-2 border-amber-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
-                    <Award className="w-6 h-6 text-amber-600" />
+                  <CardTitle className="flex items-center space-x-3 text-lg md:text-xl butcher-title text-slate-800">
+                    <Award className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
                     <span>Health Benefits</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     {benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-4 bg-amber-50 rounded-xl hover-lift">
-                        <div className="bg-emerald-500 rounded-full p-2 mt-1 shadow-sm">
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div key={index} className="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-amber-50 rounded-lg md:rounded-xl hover-lift">
+                        <div className="bg-emerald-500 rounded-full p-1.5 md:p-2 mt-1 shadow-sm">
+                          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full"></div>
                         </div>
-                        <span className="text-slate-700 premium-text font-medium">{benefit}</span>
+                        <span className="text-slate-700 premium-text font-medium text-sm md:text-base">{benefit}</span>
                       </div>
                     ))}
                   </div>
@@ -329,19 +327,19 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
             <TabsContent value="cooking">
               <Card className="product-card border-2 border-rose-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
-                    <Thermometer className="w-6 h-6 text-rose-600" />
+                  <CardTitle className="flex items-center space-x-3 text-lg md:text-xl butcher-title text-slate-800">
+                    <Thermometer className="w-5 h-5 md:w-6 md:h-6 text-rose-600" />
                     <span>Cooking Tips</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     {cookingTips.map((tip, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-4 bg-rose-50 rounded-xl hover-lift">
-                        <div className="bg-rose-500 rounded-full p-2 mt-1 shadow-sm">
-                          <Clock className="w-3 h-3 text-white" />
+                      <div key={index} className="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-rose-50 rounded-lg md:rounded-xl hover-lift">
+                        <div className="bg-rose-500 rounded-full p-1.5 md:p-2 mt-1 shadow-sm">
+                          <Clock className="w-2.5 h-2.5 md:w-3 md:h-3 text-white" />
                         </div>
-                        <span className="text-slate-700 premium-text font-medium">{tip}</span>
+                        <span className="text-slate-700 premium-text font-medium text-sm md:text-base">{tip}</span>
                       </div>
                     ))}
                   </div>
