@@ -14,9 +14,9 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-0 md:p-4">
       {/* Full Screen Cart for Mobile, Modal for Desktop */}
-      <div className="bg-white w-full h-full md:max-w-4xl md:max-h-[90vh] md:rounded-3xl overflow-hidden flex flex-col border border-amber-100 shadow-xl">
+      <div className="bg-white w-full h-full md:max-w-4xl md:w-full md:max-h-[90vh] md:rounded-3xl overflow-hidden flex flex-col border-0 md:border border-amber-100 shadow-xl">
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur border-b border-amber-100 p-4 flex justify-between items-center">
+        <div className="bg-white/80 backdrop-blur border-b border-amber-100 p-4 flex justify-between items-center flex-shrink-0 md:rounded-t-3xl">
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-2.5 rounded-2xl shadow-sm">
               <ShoppingBag className="w-5 h-5 text-white" />
