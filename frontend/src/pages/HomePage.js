@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Sun, Moon, Sparkles, Drumstick, Shield, Leaf, CheckCircle } from 'lucide-react';
+import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Sparkles, Drumstick, Shield, Leaf, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { useToast } from '../hooks/use-toast';
-import { useTheme } from '../contexts/ThemeContext';
 import ProductModal from '../components/ProductModal';
 import CartModal from '../components/CartModal';
 import CheckoutModal from '../components/CheckoutModal';
