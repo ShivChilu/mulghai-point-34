@@ -768,6 +768,14 @@ const HomePage = () => {
           </div>
         </Button>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav 
+        activeSection={activeSection}
+        scrollToSection={scrollToSection}
+        cartItemCount={getCartItemCount()}
+        onCartClick={() => { setShowSuggestions(false); setIsCartOpen(true); }}
+      />
     </div>
   );
 };
