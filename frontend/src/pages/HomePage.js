@@ -12,7 +12,6 @@ import MobileBottomNav from '../components/MobileBottomNav';
 import { mockProducts, whatsappTemplates } from '../data/mockData';
 
 const HomePage = () => {
-  const { theme, toggleTheme } = useTheme();
   const [products, setProducts] = useState(mockProducts);
   const [filteredProducts, setFilteredProducts] = useState(mockProducts);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -23,10 +22,7 @@ const HomePage = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [showIntro, setShowIntro] = useState(true);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
   const [titleText, setTitleText] = useState('');
-  const searchWrapRef = useRef(null);
   const { toast } = useToast();
 
   useEffect(() => {
