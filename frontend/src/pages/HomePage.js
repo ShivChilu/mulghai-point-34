@@ -244,7 +244,7 @@ const HomePage = () => {
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 <span className="hidden sm:inline font-semibold">Cart</span>
                 {getCartItemCount() > 0 && (
-                  <Badge className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-400 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-pulse border-2 border-white shadow-lg font-bold">
+                  <Badge className="absolute -top-1 -right-1 bg-red-600 hover:bg-red-500 text-white text-xs min-w-[24px] h-6 flex items-center justify-center rounded-full animate-pulse border-3 border-white shadow-xl font-black z-10">
                     {getCartItemCount()}
                   </Badge>
                 )}
