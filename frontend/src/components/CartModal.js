@@ -137,7 +137,7 @@ const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCar
 
         {/* Fixed Bottom Summary & Checkout - Always Visible */}
         {cart.length > 0 && (
-          <div className="bg-white border-t border-amber-100 shrink-0 md:rounded-b-3xl">
+          <div className="bg-white border-t border-amber-100 shrink-0 md:rounded-b-3xl pb-20 md:pb-0">
             <div className="p-4 space-y-4">
               {/* Summary */}
               <div className="space-y-2">
