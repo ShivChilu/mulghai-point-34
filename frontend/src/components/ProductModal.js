@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, Award, Clock, Thermometer, Package, Shield, Leaf } from 'lucide-react';
+import { X, Award, Clock, Thermometer, Package, Shield, Leaf } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
@@ -106,17 +106,17 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl max-w-5xl w-full max-h-[95vh] overflow-y-auto border border-amber-100 dark:border-slate-700 shadow-2xl">
-        <div className="sticky top-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-amber-100 dark:border-slate-700 p-6 flex justify-between items-center rounded-t-3xl">
+      <div className="bg-white/95 backdrop-blur-md rounded-3xl max-w-5xl w-full max-h-[95vh] overflow-y-auto border border-amber-100 shadow-2xl">
+        <div className="sticky top-0 bg-white/90 backdrop-blur-md border-b border-amber-100 p-6 flex justify-between items-center rounded-t-3xl">
           <div>
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-200 butcher-title">{product.name}</h2>
-            <p className="text-amber-600 dark:text-amber-400 premium-text">Premium Quality • Fresh Daily</p>
+            <h2 className="text-3xl font-bold text-slate-800 butcher-title">{product.name}</h2>
+            <p className="text-amber-600 premium-text">Premium Quality • Fresh Daily</p>
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={onClose}
-            className="hover:bg-rose-50 dark:hover:bg-slate-800 rounded-full p-3"
+            className="hover:bg-rose-50 rounded-full p-3"
           >
             <X className="w-6 h-6" />
           </Button>
@@ -147,20 +147,15 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
               )}
               
               <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-amber-100 dark:border-slate-700">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-amber-100">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <Star className="w-5 h-5 text-amber-500 fill-current" />
-                      <span className="font-bold text-lg text-slate-800 dark:text-slate-200">{product.rating}</span>
-                      <span className="text-slate-600 dark:text-slate-400 text-sm">rating</span>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-amber-700 dark:text-amber-400 butcher-title price-glow">₹{product.pricePerKg}/kg</p>
+                    <div className="text-right w-full">
+                      <p className="text-2xl font-bold text-amber-700 butcher-title">₹{product.pricePerKg}/kg</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {product.tags.slice(0, 3).map(tag => (
-                      <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-700">
+                      <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200">
                         {tag}
                       </Badge>
                     ))}
@@ -172,13 +167,13 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
             {/* Product Details */}
             <div>
               <div className="mb-8">
-                <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed text-lg premium-text text-glow">
+                <p className="text-slate-600 mb-6 leading-relaxed text-lg premium-text">
                   {product.description}
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {product.tags.map(tag => (
-                    <Badge key={tag} variant="outline" className="border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover-lift px-3 py-1">
+                    <Badge key={tag} variant="outline" className="border-amber-200 text-amber-700 hover-lift px-3 py-1">
                       {tag}
                     </Badge>
                   ))}
@@ -186,25 +181,25 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
 
                 {/* Quality Indicators */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl hover-lift">
+                  <div className="text-center p-4 bg-emerald-50 rounded-xl hover-lift">
                     <Shield className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
-                    <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">100% Fresh</p>
+                    <p className="text-xs font-medium text-emerald-700">100% Fresh</p>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl hover-lift">
+                  <div className="text-center p-4 bg-blue-50 rounded-xl hover-lift">
                     <Package className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                    <p className="text-xs font-medium text-blue-700 dark:text-blue-400">Hygienic</p>
+                    <p className="text-xs font-medium text-blue-700">Hygienic</p>
                   </div>
-                  <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-xl hover-lift">
+                  <div className="text-center p-4 bg-green-50 rounded-xl hover-lift">
                     <Leaf className="w-6 h-6 text-green-600 mx-auto mb-2" />
-                    <p className="text-xs font-medium text-green-700 dark:text-green-400">Antibiotic-Free</p>
+                    <p className="text-xs font-medium text-green-700">Antibiotic-Free</p>
                   </div>
                 </div>
               </div>
 
-              {/* Weight Selection - Fixed for dark mode */}
-              <Card className="mb-8 product-card border-2 border-amber-200 dark:border-slate-600">
+              {/* Weight Selection */}
+              <Card className="mb-8 product-card border-2 border-amber-200">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-xl text-slate-800 dark:text-slate-200 butcher-title flex items-center gap-2 text-glow">
+                  <CardTitle className="text-xl text-slate-800 butcher-title flex items-center gap-2">
                     <Award className="w-5 h-5 text-amber-600" />
                     Select Quantity
                   </CardTitle>
@@ -219,20 +214,20 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
                         className={`flex flex-col p-6 h-auto transition-all duration-300 hover-lift ${
                           selectedWeight.weight === weightOption.weight
                             ? "btn-premium shadow-lg scale-105 text-white"
-                            : "border-2 border-amber-200 dark:border-slate-600 hover:bg-amber-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                            : "border-2 border-amber-200 hover:bg-amber-50 bg-white text-slate-800"
                         }`}
                       >
                         <span className={`font-bold text-lg ${
                           selectedWeight.weight === weightOption.weight 
                             ? "text-white" 
-                            : "text-slate-800 dark:text-slate-100 text-glow"
+                            : "text-slate-800"
                         }`}>
                           {weightOption.weight}
                         </span>
                         <span className={`text-sm opacity-90 ${
                           selectedWeight.weight === weightOption.weight 
                             ? "text-white" 
-                            : "text-amber-700 dark:text-amber-400 price-glow"
+                            : "text-amber-700"
                         }`}>
                           ₹{weightOption.price}
                         </span>
@@ -240,14 +235,14 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
                     ))}
                   </div>
                   
-                  <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-700">
+                  <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-slate-700 dark:text-slate-300 font-medium text-glow">Selected:</span>
-                      <span className="font-bold text-xl text-amber-700 dark:text-amber-400 butcher-title price-glow">
+                      <span className="text-slate-700 font-medium">Selected:</span>
+                      <span className="font-bold text-xl text-amber-700 butcher-title">
                         {selectedWeight.weight} - ₹{selectedWeight.price}
                       </span>
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 premium-text text-glow">
+                    <div className="text-sm text-slate-600 premium-text">
                       Price per kg: ₹{product.pricePerKg} • Category: {product.category}
                     </div>
                   </div>
@@ -267,39 +262,39 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
 
           {/* Additional Information Tabs */}
           <Tabs defaultValue="nutrition" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8 bg-amber-50 dark:bg-slate-800 rounded-2xl p-1">
-              <TabsTrigger value="nutrition" className="rounded-xl font-semibold text-slate-700 dark:text-slate-300">Nutrition</TabsTrigger>
-              <TabsTrigger value="benefits" className="rounded-xl font-semibold text-slate-700 dark:text-slate-300">Benefits</TabsTrigger>
-              <TabsTrigger value="cooking" className="rounded-xl font-semibold text-slate-700 dark:text-slate-300">Cooking Tips</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-8 bg-amber-50 rounded-2xl p-1">
+              <TabsTrigger value="nutrition" className="rounded-xl font-semibold text-slate-700">Nutrition</TabsTrigger>
+              <TabsTrigger value="benefits" className="rounded-xl font-semibold text-slate-700">Benefits</TabsTrigger>
+              <TabsTrigger value="cooking" className="rounded-xl font-semibold text-slate-700">Cooking Tips</TabsTrigger>
             </TabsList>
             
             <TabsContent value="nutrition">
-              <Card className="product-card border-2 border-emerald-200 dark:border-emerald-700">
+              <Card className="product-card border-2 border-emerald-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800 dark:text-slate-200 text-glow">
+                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
                     <Award className="w-6 h-6 text-emerald-600" />
                     <span>Nutritional Information</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl hover-lift">
+                    <div className="text-center p-6 bg-emerald-50 rounded-2xl hover-lift">
                       <div className="text-3xl font-bold text-emerald-600 mb-2 butcher-title">
                         {nutritionalInfo.protein}
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400 font-medium text-glow">Protein</div>
+                      <div className="text-sm text-slate-600 font-medium">Protein</div>
                     </div>
-                    <div className="text-center p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl hover-lift">
+                    <div className="text-center p-6 bg-blue-50 rounded-2xl hover-lift">
                       <div className="text-3xl font-bold text-blue-600 mb-2 butcher-title">
                         {nutritionalInfo.fat}
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400 font-medium text-glow">Fat</div>
+                      <div className="text-sm text-slate-600 font-medium">Fat</div>
                     </div>
-                    <div className="text-center p-6 bg-purple-50 dark:bg-purple-900/20 rounded-2xl hover-lift">
+                    <div className="text-center p-6 bg-purple-50 rounded-2xl hover-lift">
                       <div className="text-3xl font-bold text-purple-600 mb-2 butcher-title">
                         {nutritionalInfo.calories}
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400 font-medium text-glow">Calories</div>
+                      <div className="text-sm text-slate-600 font-medium">Calories</div>
                     </div>
                   </div>
                 </CardContent>
@@ -307,21 +302,21 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
             </TabsContent>
             
             <TabsContent value="benefits">
-              <Card className="product-card border-2 border-amber-200 dark:border-amber-700">
+              <Card className="product-card border-2 border-amber-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800 dark:text-slate-200 text-glow">
-                    <Star className="w-6 h-6 text-amber-600" />
+                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
+                    <Award className="w-6 h-6 text-amber-600" />
                     <span>Health Benefits</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl hover-lift">
+                      <div key={index} className="flex items-start space-x-4 p-4 bg-amber-50 rounded-xl hover-lift">
                         <div className="bg-emerald-500 rounded-full p-2 mt-1 shadow-sm">
                           <div className="w-2 h-2 bg-white rounded-full"></div>
                         </div>
-                        <span className="text-slate-700 dark:text-slate-300 premium-text font-medium text-glow">{benefit}</span>
+                        <span className="text-slate-700 premium-text font-medium">{benefit}</span>
                       </div>
                     ))}
                   </div>
@@ -330,9 +325,9 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
             </TabsContent>
             
             <TabsContent value="cooking">
-              <Card className="product-card border-2 border-rose-200 dark:border-rose-700">
+              <Card className="product-card border-2 border-rose-200">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800 dark:text-slate-200 text-glow">
+                  <CardTitle className="flex items-center space-x-3 text-xl butcher-title text-slate-800">
                     <Thermometer className="w-6 h-6 text-rose-600" />
                     <span>Cooking Tips</span>
                   </CardTitle>
@@ -340,11 +335,11 @@ const ProductModal = ({ product, onClose, onAddToCart }) => {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {cookingTips.map((tip, index) => (
-                      <div key={index} className="flex items-start space-x-4 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-xl hover-lift">
+                      <div key={index} className="flex items-start space-x-4 p-4 bg-rose-50 rounded-xl hover-lift">
                         <div className="bg-rose-500 rounded-full p-2 mt-1 shadow-sm">
                           <Clock className="w-3 h-3 text-white" />
                         </div>
-                        <span className="text-slate-700 dark:text-slate-300 premium-text font-medium text-glow">{tip}</span>
+                        <span className="text-slate-700 premium-text font-medium">{tip}</span>
                       </div>
                     ))}
                   </div>
