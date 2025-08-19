@@ -67,15 +67,15 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-0 md:p-4">
-      <div className="bg-white w-full h-full md:max-w-4xl md:max-h-[95vh] md:rounded-3xl overflow-hidden flex flex-col border border-amber-100 shadow-2xl">
+      <div className="bg-white w-full h-full md:max-w-4xl md:w-full md:max-h-[95vh] md:rounded-3xl overflow-hidden flex flex-col border-0 md:border border-amber-100 shadow-2xl">
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur p-4 flex justify-between items-center border-b border-amber-100">
+        <div className="bg-white/80 backdrop-blur p-4 flex justify-between items-center border-b border-amber-100 flex-shrink-0 md:rounded-t-3xl">
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-br from-emerald-400 to-emerald-500 p-2.5 rounded-2xl shadow-sm">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-slate-900">Secure Checkout</h2>
+              <h2 className="text-lg md:text-xl font-semibold text-slate-900">Secure Checkout</h2>
               <p className="text-slate-500 text-xs">Complete your order details</p>
             </div>
           </div>
