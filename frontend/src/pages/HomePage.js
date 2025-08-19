@@ -280,7 +280,7 @@ const HomePage = () => {
         {/* Enhanced Content */}
         <div className="container mx-auto px-4 z-10 text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="reveal-up text-5xl md:text-7xl font-extrabold mb-6 text-white butcher-title" 
+            <h2 className="reveal-up text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-extrabold mb-6 text-white butcher-title mobile-title" 
                 style={{textShadow:'0 4px 20px rgba(0,0,0,0.8)'}}>
               {titleText}<span className="caret animate-pulse">|</span>
             </h2>
