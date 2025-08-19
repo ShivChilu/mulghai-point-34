@@ -412,7 +412,7 @@ const HomePage = () => {
               {filteredProducts.map((product, index) => (
                 <Card 
                   key={product.id} 
-                  className="group product-card flip-card hover-lift rounded-3xl overflow-hidden cursor-pointer border-2 flip-in" 
+                  className="group product-card hover-lift rounded-3xl overflow-hidden cursor-pointer border-2 scale-in" 
                   onClick={() => setSelectedProduct(product)}
                   style={{animationDelay: `${index * 100}ms`}}
                 >
