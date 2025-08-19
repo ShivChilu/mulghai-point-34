@@ -290,7 +290,7 @@ const HomePage = () => {
                 className="hidden md:flex items-center space-x-2 text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 transition-colors px-4 py-2 rounded-full bg-amber-50 dark:bg-slate-700 hover-lift"
               >
                 <Phone className="w-4 h-4" />
-                <span className="text-sm font-medium">7986955634</span>
+                <span className="text-sm font-medium">6284307484</span>
               </a>
 
               {/* Cart Button */}
