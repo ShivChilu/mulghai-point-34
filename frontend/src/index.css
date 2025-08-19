@@ -373,6 +373,23 @@ body {
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
 }
 
+/* Toast Notifications */
+.toast-success {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3) !important;
+}
+
+.toast-success [data-title] {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.toast-success [data-description] {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
 /* Mobile bottom navigation spacing */
 .mobile-bottom-spacer {
   height: 80px; /* Height for mobile bottom nav + safe area */
