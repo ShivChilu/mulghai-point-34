@@ -193,6 +193,9 @@ const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, 
               </form>
             </div>
           </div>
+          
+          {/* Mobile bottom navigation spacer */}
+          <div className="mobile-bottom-spacer md:hidden"></div>
         </div>
       </div>
     </div>
