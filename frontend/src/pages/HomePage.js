@@ -383,7 +383,7 @@ const HomePage = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                onClick={() => window.open(`https://wa.me/917986955634?text=${encodeURIComponent(whatsappTemplates.inquiry)}`, '_blank')} 
+                onClick={() => window.open(`https://wa.me/916284307484?text=${encodeURIComponent(whatsappTemplates.inquiry)}`, '_blank')} 
                 className="border-2 border-white text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm px-10 py-4 rounded-full font-bold text-lg hover-lift"
               >
                 💬 WhatsApp Us
