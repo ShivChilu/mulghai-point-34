@@ -628,7 +628,7 @@ const HomePage = () => {
               </p>
               <div className="flex items-center space-x-3 bg-amber-50 dark:bg-slate-800 rounded-full px-6 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
                 <Phone className="w-5 h-5 text-amber-700 dark:text-amber-400" />
-                <span className="text-amber-700 dark:text-amber-400 font-bold text-lg">7986955634</span>
+                <span className="text-amber-700 dark:text-amber-400 font-bold text-lg">6284307484</span>
               </div>
             </div>
             
