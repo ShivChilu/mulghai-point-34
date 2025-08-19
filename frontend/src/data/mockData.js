@@ -340,7 +340,7 @@ ${itemsList}
 Your order has been received and will be prepared with utmost care.
 
 🕐 Expected delivery time: 45-60 minutes
-📞 For any queries, call: 7986955634
+📞 For any queries, call: 6284307484
 
 ✅ 100% Fresh | 🚚 Fast Delivery | 🧼 Hygienic | 🐓 Antibiotic-Free
 
