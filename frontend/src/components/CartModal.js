@@ -7,7 +7,7 @@ import { Card, CardContent } from './ui/card';
 const CartModal = ({ isOpen, onClose, cart, onUpdateQuantity, onCheckout, getCartTotal }) => {
   if (!isOpen) return null;
 
-  const deliveryCharge = getCartTotal() < 500 ? 50 : 0;
+  const deliveryCharge = getCartTotal() < 150 ? 25 : 0;
   const totalWithDelivery = getCartTotal() + deliveryCharge;
   const savings = cart.reduce((total, item) => total + (item.originalPrice || 0) * item.quantity, 0) - getCartTotal();
 
