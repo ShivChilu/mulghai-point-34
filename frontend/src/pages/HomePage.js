@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Menu, X, Home, Package, Info, Users, Sparkles } from 'lucide-react';
+import { Search, ShoppingCart, Phone, Clock, Award, Truck, MapPin, Star, Sun, Moon, Sparkles, Drumstick, Shield, Leaf, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { useToast } from '../hooks/use-toast';
+import { useTheme } from '../contexts/ThemeContext';
 import ProductModal from '../components/ProductModal';
 import CartModal from '../components/CartModal';
 import CheckoutModal from '../components/CheckoutModal';
-import { mockProducts } from '../data/mockData';
+import { mockProducts, whatsappTemplates } from '../data/mockData';
 
 const HomePage = () => {
+  const { theme, toggleTheme } = useTheme();
   const [products, setProducts] = useState(mockProducts);
   const [filteredProducts, setFilteredProducts] = useState(mockProducts);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -19,7 +21,6 @@ const HomePage = () => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [showIntro, setShowIntro] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -29,7 +30,7 @@ const HomePage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const t = setTimeout(() => setShowIntro(false), 1200);
+    const t = setTimeout(() => setShowIntro(false), 1400);
     return () => clearTimeout(t);
   }, []);
 
@@ -44,42 +45,46 @@ const HomePage = () => {
     return () => document.removeEventListener('click', onDocClick);
   }, []);
 
-  // Continuous typewriter for the main heading
+  // Enhanced typewriter effect
   useEffect(() => {
-    const full = 'Fresh Meat';
-    let i = 0;
-    let direction = 1; // 1 typing, -1 deleting
+    const phrases = ['Fresh Meat', 'Premium Cuts', 'Quality First', 'Fresh Meat'];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
     let timer;
-    const step = () => {
-      setTitleText(full.slice(0, i));
-      if (direction === 1) {
-        i++;
-        if (i > full.length) {
-          direction = -1;
-          timer = setTimeout(step, 900); // pause at full text
-          return;
+
+    const typeWriter = () => {
+      const currentPhrase = phrases[phraseIndex];
+      
+      if (isDeleting) {
+        setTitleText(currentPhrase.substring(0, charIndex - 1));
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
         }
+        timer = setTimeout(typeWriter, 50);
       } else {
-        i--;
-        if (i < 0) {
-          direction = 1;
-          i = 0;
-          timer = setTimeout(step, 400); // pause at empty
-          return;
+        setTitleText(currentPhrase.substring(0, charIndex + 1));
+        charIndex++;
+        if (charIndex === currentPhrase.length) {
+          isDeleting = true;
+          timer = setTimeout(typeWriter, 1500);
+        } else {
+          timer = setTimeout(typeWriter, 100);
         }
       }
-      timer = setTimeout(step, direction === 1 ? 90 : 45);
     };
-    step();
+    typeWriter();
     return () => clearTimeout(timer);
   }, []);
 
   const categories = [
-    { id: 'all', name: 'All Items', count: products.length },
-    { id: 'chicken', name: 'Chicken', count: products.filter(p => p.category === 'chicken').length },
-    { id: 'mutton', name: 'Mutton', count: products.filter(p => p.category === 'mutton').length },
-    { id: 'fish', name: 'Fish & Seafood', count: products.filter(p => p.category === 'fish').length },
-    { id: 'processed', name: 'Processed Items', count: products.filter(p => p.category === 'processed').length }
+    { id: 'all', name: 'All Items', count: products.length, icon: '🥩' },
+    { id: 'chicken', name: 'Chicken', count: products.filter(p => p.category === 'chicken').length, icon: '🐓' },
+    { id: 'mutton', name: 'Mutton', count: products.filter(p => p.category === 'mutton').length, icon: '🐑' },
+    { id: 'fish', name: 'Fish & Seafood', count: products.filter(p => p.category === 'fish').length, icon: '🐟' },
+    { id: 'processed', name: 'Processed Items', count: products.filter(p => p.category === 'processed').length, icon: '🍖' }
   ];
 
   const serviceablePincodes = {
@@ -92,7 +97,14 @@ const HomePage = () => {
   useEffect(() => { filterProducts(); }, [selectedCategory, searchQuery, products]);
 
   const buildSuggestions = (q) => {
-    let items = products.map(p => ({ id: p.id, name: p.name, subtitle: p.category, image: p.image, tags: p.tags || [] }));
+    let items = products.map(p => ({ 
+      id: p.id, 
+      name: p.name, 
+      subtitle: `${p.category} • ₹${p.pricePerKg}/kg`, 
+      image: p.image, 
+      tags: p.tags || [] 
+    }));
+    
     if (q && q.trim()) {
       const term = q.toLowerCase();
       items = items.filter(p =>
@@ -121,14 +133,27 @@ const HomePage = () => {
   };
 
   const addToCart = (product, weight, price) => {
-    const cartItem = { id: `${product.id}-${weight}`, productId: product.id, name: product.name, weight, price, quantity: 1, image: product.image };
+    const cartItem = { 
+      id: `${product.id}-${weight}`, 
+      productId: product.id, 
+      name: product.name, 
+      weight, 
+      price, 
+      quantity: 1, 
+      image: product.image 
+    };
+    
     const existingItem = cart.find(item => item.id === cartItem.id);
     if (existingItem) {
       setCart(cart.map(item => item.id === cartItem.id ? { ...item, quantity: item.quantity + 1 } : item));
     } else {
       setCart([...cart, cartItem]);
     }
-    toast({ title: 'Added to Cart', description: `${product.name} (${weight}) added successfully` });
+    
+    toast({ 
+      title: 'Added to Cart 🛒', 
+      description: `${product.name} (${weight}) added successfully!` 
+    });
   };
 
   const updateCartQuantity = (itemId, newQuantity) => {
@@ -141,7 +166,6 @@ const HomePage = () => {
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
-    setIsMobileMenuOpen(false);
     setShowSuggestions(false);
     const element = document.getElementById(sectionId);
     if (element) element.scrollIntoView({ behavior: 'smooth' });
@@ -155,7 +179,7 @@ const HomePage = () => {
 
   const SearchBox = ({ mobile = false }) => (
     <div className="relative w-full" ref={searchWrapRef}>
-      <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${mobile ? 'text-amber-600/70' : 'text-amber-600/70'} w-5 h-5 z-10`} />
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-600/70 w-5 h-5 z-10" />
       <Input
         type="text"
         placeholder="Search chicken, mutton, fish..."
@@ -163,194 +187,258 @@ const HomePage = () => {
         autoComplete="off"
         spellCheck={false}
         onChange={(e) => setSearchQuery(e.target.value)}
-        onFocus={() => { setShowSuggestions(true); setSuggestions(buildSuggestions(searchQuery)); }}
+        onFocus={() => { 
+          setShowSuggestions(true); 
+          setSuggestions(buildSuggestions(searchQuery)); 
+        }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && suggestions.length > 0) {
             e.preventDefault();
             handleSuggestionSelect(suggestions[0].name);
           }
         }}
-        className="pl-12 pr-4 py-3 bg-white border border-amber-200 rounded-full text-slate-700 placeholder-slate-400 focus:border-amber-400 focus:ring-0"
+        className="pl-12 pr-4 py-3 bg-white/90 dark:bg-slate-800/90 border border-amber-200 dark:border-slate-600 rounded-full text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:border-amber-400 focus:ring-0 backdrop-blur-sm transition-all duration-300"
       />
-      {showSuggestions && (
-        <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-amber-100 rounded-xl shadow-lg max-h-64 overflow-auto z-40">
-          {suggestions.length === 0 ? (
-            <div className="px-4 py-3 text-slate-500 text-sm">No matches found</div>
-          ) : (
-            suggestions.map(s => (
-              <button
-                key={s.id}
-                className="w-full text-left px-4 py-3 hover:bg-amber-50 flex items-center space-x-3"
-                onMouseDown={() => handleSuggestionSelect(s.name)}
-                onTouchStart={() => handleSuggestionSelect(s.name)}
-              >
-                <img src={s.image} alt={s.name} className="w-8 h-8 rounded object-cover" />
-                <div className="min-w-0">
-                  <div className="font-medium text-slate-800 truncate">{s.name}</div>
-                  <div className="text-xs text-slate-500 truncate">{s.subtitle}</div>
-                </div>
-                <div className="ml-auto flex items-center space-x-1 text-amber-600 text-xs">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>suggestion</span>
-                </div>
-              </button>
-            ))
-          )}
+      {showSuggestions && suggestions.length > 0 && (
+        <div className="absolute left-0 right-0 top-full mt-2 bg-white/95 dark:bg-slate-800/95 border border-amber-100 dark:border-slate-600 rounded-xl shadow-xl max-h-64 overflow-auto z-40 backdrop-blur-sm">
+          {suggestions.map(s => (
+            <button
+              key={s.id}
+              className="w-full text-left px-4 py-3 hover:bg-amber-50 dark:hover:bg-slate-700 flex items-center space-x-3 transition-all duration-200"
+              onMouseDown={() => handleSuggestionSelect(s.name)}
+              onTouchStart={() => handleSuggestionSelect(s.name)}
+            >
+              <img src={s.image} alt={s.name} className="w-10 h-10 rounded-lg object-cover shadow-sm" />
+              <div className="min-w-0 flex-1">
+                <div className="font-medium text-slate-800 dark:text-slate-200 truncate">{s.name}</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400 truncate">{s.subtitle}</div>
+              </div>
+              <div className="ml-auto flex items-center space-x-1 text-amber-600 text-xs">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+            </button>
+          ))}
         </div>
       )}
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-50 text-slate-800 pb-[calc(env(safe-area-inset-bottom)+84px)]">
-      {/* Intro splash - plays once on open then hides */}
+    <div className="min-h-screen transition-all duration-500" 
+         style={{ 
+           background: theme === 'light' 
+             ? 'linear-gradient(135deg, #fefaf6 0%, #fff8f0 50%, #fef3e2 100%)'
+             : 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
+         }}>
+      
+      {/* Intro Splash */}
       {showIntro && (
-        <div className="fixed inset-0 z-[60] bg-white flex items-center justify-center">
+        <div className="fixed inset-0 z-[60] bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
           <div className="splash-enter text-center">
-            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center shadow-md">
-              <Award className="w-9 h-9 text-white" />
+            <div className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-2xl logo-glow">
+              <Drumstick className="w-10 h-10 text-white" />
             </div>
-            <h1 className="mt-4 text-xl font-semibold text-amber-800">Mulghai Point</h1>
+            <h1 className="mt-6 text-2xl font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent butcher-title">
+              Mulghai Point
+            </h1>
+            <p className="text-amber-600/80 mt-2 premium-text">Premium Fresh Meat</p>
           </div>
         </div>
       )}
 
-      {/* Header - Light Theme */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-amber-100">
-        <div className="container mx-auto px-4 py-3">
+      {/* Enhanced Header */}
+      <header className="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-100 dark:border-slate-700 wood-texture">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
-                <Award className="w-7 h-7 text-white" />
+            <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-br from-amber-400 to-rose-500 p-3 rounded-2xl shadow-lg hover-rotate logo-glow">
+                <Drumstick className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">Mulghai Point</h1>
-                <p className="text-xs text-amber-600/80">Premium Fresh Meat</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent butcher-title">
+                  Mulghai Point
+                </h1>
+                <p className="text-sm text-amber-600/80 dark:text-amber-400/80 premium-text flex items-center gap-1">
+                  <Shield className="w-3 h-3" />
+                  Premium Fresh Meat
+                </p>
               </div>
             </div>
 
-            {/* Search - Desktop */}
-            <div className="hidden md:flex flex-1 max-w-md mx-8">
+            {/* Desktop Search */}
+            <div className="hidden md:flex flex-1 max-w-lg mx-8">
               <SearchBox />
             </div>
 
-            <div className="flex items-center space-x-2">
-              <a href="tel:7986955634" className="hidden md:flex items-center space-x-2 text-amber-700 hover:text-amber-800 transition-colors px-3 py-2 rounded-full">
+            <div className="flex items-center space-x-3">
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-amber-100 dark:bg-slate-700 hover:bg-amber-200 dark:hover:bg-slate-600 transition-all duration-300 hover-glow"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? (
+                  <Moon className="w-5 h-5 text-amber-700" />
+                ) : (
+                  <Sun className="w-5 h-5 text-amber-400" />
+                )}
+              </button>
+
+              {/* Phone Number - Desktop */}
+              <a 
+                href="tel:7986955634" 
+                className="hidden md:flex items-center space-x-2 text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 transition-colors px-4 py-2 rounded-full bg-amber-50 dark:bg-slate-700 hover-lift"
+              >
                 <Phone className="w-4 h-4" />
                 <span className="text-sm font-medium">7986955634</span>
               </a>
 
-              {/* Top Cart Button */}
-              <Button onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} className="relative bg-amber-600 hover:bg-amber-500 text-white rounded-full px-5 py-3 shadow-md transition-transform active:scale-95">
+              {/* Cart Button */}
+              <Button 
+                onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} 
+                className="relative btn-premium rounded-full px-6 py-3 shadow-lg hover-lift"
+              >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                <span className="hidden sm:inline">Cart</span>
+                <span className="hidden sm:inline font-semibold">Cart</span>
                 {getCartItemCount() > 0 && (
-                  <Badge className="absolute -top-2 -right-2 bg-rose-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full">
+                  <Badge className="absolute -top-2 -right-2 bg-rose-500 text-white text-xs min-w-[22px] h-5 flex items-center justify-center rounded-full animate-pulse">
                     {getCartItemCount()}
                   </Badge>
                 )}
-              </Button>
-
-              <Button variant="ghost" size="sm" onClick={() => { setShowSuggestions(false); setIsMobileMenuOpen(!isMobileMenuOpen); }} className="md:hidden text-amber-700 hover:text-amber-900">
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
           </div>
 
           {/* Mobile Search */}
-          <div className="md:hidden mt-3">
+          <div className="md:hidden mt-4">
             <SearchBox mobile />
           </div>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden mt-3 bg-white/90 backdrop-blur-md rounded-xl p-3 border border-amber-100">
-              <div className="flex flex-col space-y-1">
-                <Button variant="ghost" onClick={() => scrollToSection('home')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  <Home className="w-4 h-4 mr-2" /> Home
-                </Button>
-                <Button variant="ghost" onClick={() => scrollToSection('products')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  <Package className="w-4 h-4 mr-2" /> Products
-                </Button>
-                <Button variant="ghost" onClick={() => { setShowSuggestions(false); setIsCartOpen(true); }} className="justify-start text-amber-700 hover:bg-amber-50">
-                  <ShoppingCart className="w-4 h-4 mr-2" /> Cart
-                </Button>
-                <Button variant="ghost" onClick={() => scrollToSection('about')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  <Info className="w-4 h-4 mr-2" /> About
-                </Button>
-                <Button variant="ghost" onClick={() => scrollToSection('contact')} className="justify-start text-amber-700 hover:bg-amber-50">
-                  <Users className="w-4 h-4 mr-2" /> Contact
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
       </header>
 
-      {/* Hero Section - Image visible, no overlay */}
-      <section id="home" className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+      {/* Enhanced Hero Section */}
+      <section id="home" className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* HD Background Image */}
         <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=2000&q=80" alt="Premium meat background" className="w-full h-full object-cover" />
+          <img 
+            src="https://images.unsplash.com/photo-1597417321971-45e034f7a993" 
+            alt="Premium butcher shop interior" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/50"></div>
         </div>
 
-        {/* Subtle live animated elements (no image overlay) */}
-        <div className="pointer-events-none absolute inset-0">
-          <span className="absolute top-10 left-8 w-20 h-20 bg-amber-300/25 rounded-full blur-2xl float-1"></span>
-          <span className="absolute bottom-14 right-12 w-24 h-24 bg-rose-300/25 rounded-full blur-2xl float-2"></span>
-          <span className="absolute top-1/3 right-1/4 text-amber-300/80 float-3"><Sparkles className="w-8 h-8" /></span>
+        {/* Floating Animation Elements */}
+        <div className="particles">
+          <span className="particle"></span>
+          <span className="particle"></span>
+          <span className="particle"></span>
+          <span className="particle"></span>
         </div>
 
+        {/* Enhanced Content */}
         <div className="container mx-auto px-4 z-10 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="reveal-up text-4xl md:text-6xl font-extrabold mb-4 text-white" style={{textShadow:'0 3px 14px rgba(0,0,0,0.7), 0 0 1px rgba(0,0,0,0.8)'}}>
-              {titleText}<span className="caret">|</span>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="reveal-up text-5xl md:text-7xl font-extrabold mb-6 text-white butcher-title" 
+                style={{textShadow:'0 4px 20px rgba(0,0,0,0.8)'}}>
+              {titleText}<span className="caret animate-pulse">|</span>
             </h2>
-            <p className="reveal-up mb-8" style={{animationDelay:'200ms'}}>
-              <span className="inline-block bg-amber-100/95 text-amber-900 rounded-full px-4 py-2 shadow-sm ring-1 ring-amber-300">
-                Farm-fresh quality delivered to your doorstep<span className="caret">|</span>
+            
+            <p className="reveal-up mb-8" style={{animationDelay:'300ms'}}>
+              <span className="inline-block bg-white/95 text-amber-900 rounded-full px-6 py-3 shadow-lg ring-2 ring-amber-300 hover-glow premium-text font-semibold">
+                🥩 Farm-fresh quality delivered to your doorstep 🚚
               </span>
             </p>
 
-            <div className="reveal-up flex flex-col sm:flex-row justify-center gap-4 mb-12" style={{animationDelay:'350ms'}}>
-              <Button size="lg" onClick={() => scrollToSection('products')} className="bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-full shadow-md transition-transform active:scale-95">
-                Shop Now
+            {/* Feature Icons Row */}
+            <div className="reveal-up mb-12" style={{animationDelay:'500ms'}}>
+              <div className="flex justify-center items-center gap-6 md:gap-8 flex-wrap">
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                  <CheckCircle className="w-5 h-5 text-emerald-400" />
+                  <span className="text-white font-medium text-sm">100% Fresh</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                  <Truck className="w-5 h-5 text-blue-400" />
+                  <span className="text-white font-medium text-sm">Fast Delivery</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                  <Shield className="w-5 h-5 text-amber-400" />
+                  <span className="text-white font-medium text-sm">Hygienic</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                  <Leaf className="w-5 h-5 text-green-400" />
+                  <span className="text-white font-medium text-sm">Antibiotic-Free</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="reveal-up flex flex-col sm:flex-row justify-center gap-4 mb-16" style={{animationDelay:'700ms'}}>
+              <Button 
+                size="lg" 
+                onClick={() => scrollToSection('products')} 
+                className="btn-premium font-bold px-10 py-4 rounded-full shadow-xl text-lg hover-lift"
+              >
+                🛒 Shop Now
               </Button>
-              <Button size="lg" variant="outline" onClick={() => window.open('https://wa.me/917986955634', '_blank')} className="border border-amber-300 text-amber-700 hover:bg-amber-50 bg-white px-8 py-4 rounded-full">
-                Contact Us
+              <Button 
+                size="lg" 
+                variant="outline" 
+                onClick={() => window.open(`https://wa.me/917986955634?text=${encodeURIComponent(whatsappTemplates.inquiry)}`, '_blank')} 
+                className="border-2 border-white text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm px-10 py-4 rounded-full font-bold text-lg hover-lift"
+              >
+                💬 WhatsApp Us
               </Button>
             </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-sm">
-                <Clock className="w-8 h-8 text-amber-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-1">Fresh Daily</h3>
-                <p className="text-slate-600 text-sm">Delivered fresh every day</p>
+            {/* Enhanced Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'900ms'}}>
+                <Clock className="w-10 h-10 text-amber-600 mx-auto mb-4 float-1" />
+                <h3 className="text-xl font-bold mb-2 butcher-title">Fresh Daily</h3>
+                <p className="text-slate-600 dark:text-slate-300">Delivered fresh every day from trusted farms</p>
               </div>
-              <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-sm">
-                <Truck className="w-8 h-8 text-amber-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-1">Fast Delivery</h3>
-                <p className="text-slate-600 text-sm">Quick and reliable service</p>
+              
+              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1100ms'}}>
+                <Truck className="w-10 h-10 text-amber-600 mx-auto mb-4 float-2" />
+                <h3 className="text-xl font-bold mb-2 butcher-title">Fast Delivery</h3>
+                <p className="text-slate-600 dark:text-slate-300">Quick and reliable service within 60 minutes</p>
               </div>
-              <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-sm">
-                <Award className="w-8 h-8 text-amber-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-1">Premium Quality</h3>
-                <p className="text-slate-600 text-sm">Hand-selected finest cuts</p>
+              
+              <div className="scale-in product-card bg-white/95 dark:bg-slate-800/95 rounded-2xl p-8 backdrop-blur-sm hover-lift" style={{animationDelay:'1300ms'}}>
+                <Award className="w-10 h-10 text-amber-600 mx-auto mb-4 float-3" />
+                <h3 className="text-xl font-bold mb-2 butcher-title">Premium Quality</h3>
+                <p className="text-slate-600 dark:text-slate-300">Hand-selected finest cuts and premium meat</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories - Light */}
-      <section className="py-6 bg-white/70 backdrop-blur-md border-y border-amber-100">
+      {/* Enhanced Categories */}
+      <section className="py-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-y border-amber-100 dark:border-slate-600 wood-texture">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-3">
             {categories.map(category => (
-              <Button key={category.id} variant={selectedCategory === category.id ? 'default' : 'outline'} onClick={() => setSelectedCategory(category.id)} className={`${selectedCategory === category.id ? 'bg-amber-600 hover:bg-amber-500 text-white border-0 shadow-sm' : 'border border-amber-200 text-amber-700 hover:bg-amber-50 bg-white'} rounded-full px-5 py-2 transition-all`}>
+              <Button 
+                key={category.id} 
+                variant={selectedCategory === category.id ? 'default' : 'outline'} 
+                onClick={() => setSelectedCategory(category.id)} 
+                className={`${
+                  selectedCategory === category.id 
+                    ? 'btn-premium shadow-lg scale-105' 
+                    : 'border-2 border-amber-200 dark:border-slate-600 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 bg-white/50 dark:bg-slate-800/50'
+                } rounded-full px-6 py-3 transition-all duration-300 hover-lift font-semibold backdrop-blur-sm`}
+              >
+                <span className="mr-2">{category.icon}</span>
                 {category.name}
-                <Badge variant="secondary" className={`ml-2 ${selectedCategory === category.id ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
+                <Badge 
+                  variant="secondary" 
+                  className={`ml-2 ${
+                    selectedCategory === category.id 
+                      ? 'bg-white/20 text-white' 
+                      : 'bg-amber-100 dark:bg-slate-600 text-amber-700 dark:text-amber-400'
+                  }`}
+                >
                   {category.count}
                 </Badge>
               </Button>
@@ -359,54 +447,100 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Products - Light Cards */}
-      <section id="products" className="py-12">
+      {/* Enhanced Products Section */}
+      <section id="products" className="py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">Our Fresh Products</h3>
-            <p className="text-slate-600 max-w-2xl mx-auto">Hand-picked premium quality meat, sourced from trusted farms and delivered fresh to your door</p>
+          <div className="text-center mb-12">
+            <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent butcher-title">
+              Our Fresh Products
+            </h3>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto premium-text">
+              Hand-picked premium quality meat, sourced from trusted farms and delivered fresh to your door with guaranteed quality and hygiene
+            </p>
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="bg-white rounded-2xl p-10 border border-amber-100">
-                <Package className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                <p className="text-slate-500 text-lg">No products found matching your search.</p>
+            <div className="text-center py-20">
+              <div className="product-card bg-white/95 dark:bg-slate-800/95 rounded-3xl p-12 backdrop-blur-sm hover-lift">
+                <div className="text-6xl mb-4">🔍</div>
+                <p className="text-slate-500 dark:text-slate-400 text-xl">No products found matching your search.</p>
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredProducts.map(product => (
-                <Card key={product.id} className="group bg-white border border-amber-100 hover:shadow-md transition-all rounded-2xl overflow-hidden cursor-pointer" onClick={() => setSelectedProduct(product)}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredProducts.map((product, index) => (
+                <Card 
+                  key={product.id} 
+                  className="group product-card hover-lift rounded-3xl overflow-hidden cursor-pointer border-2 scale-in" 
+                  onClick={() => setSelectedProduct(product)}
+                  style={{animationDelay: `${index * 100}ms`}}
+                >
                   <div className="relative overflow-hidden">
-                    <img src={product.image} alt={product.name} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    {product.isNew && (<Badge className="absolute top-3 left-3 bg-emerald-500 text-white font-semibold px-3 py-1 rounded-full">New</Badge>)}
-                    {product.discount && (<Badge className="absolute top-3 right-3 bg-rose-500 text-white font-semibold px-3 py-1 rounded-full">{product.discount}% OFF</Badge>)}
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {product.isNew && (
+                      <Badge className="absolute top-4 left-4 bg-emerald-500 text-white font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+                        ✨ New
+                      </Badge>
+                    )}
+                    {product.discount && (
+                      <Badge className="absolute top-4 right-4 bg-rose-500 text-white font-bold px-3 py-1 rounded-full shadow-lg">
+                        🔥 {product.discount}% OFF
+                      </Badge>
+                    )}
                   </div>
+                  
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">{product.name}</CardTitle>
-                      <div className="flex items-center space-x-1 bg-amber-100 rounded-full px-2 py-1">
+                      <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors butcher-title">
+                        {product.name}
+                      </CardTitle>
+                      <div className="flex items-center space-x-1 bg-amber-100 dark:bg-amber-900 rounded-full px-3 py-1 shadow-sm">
                         <Star className="w-4 h-4 text-amber-500 fill-current" />
-                        <span className="text-sm text-amber-700 font-medium">{product.rating}</span>
+                        <span className="text-sm text-amber-700 dark:text-amber-400 font-bold">{product.rating}</span>
                       </div>
                     </div>
-                    <CardDescription className="text-sm text-slate-600 line-clamp-2">{product.description}</CardDescription>
+                    <CardDescription className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 premium-text">
+                      {product.description}
+                    </CardDescription>
                   </CardHeader>
+                  
                   <CardContent>
                     <div className="flex justify-between items-center mb-4">
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-2">
                         {product.tags.slice(0, 2).map(tag => (
-                          <Badge key={tag} variant="secondary" className="text-xs bg-amber-100 text-amber-700 border border-amber-200">{tag}</Badge>
+                          <Badge 
+                            key={tag} 
+                            variant="secondary" 
+                            className="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-700 font-medium"
+                          >
+                            {tag}
+                          </Badge>
                         ))}
                       </div>
                       <div className="text-right">
-                        <p className="text-xl font-bold text-amber-700">₹{product.pricePerKg}/kg</p>
-                        <p className="text-xs text-slate-500">Starting from ₹{Math.round(product.pricePerKg * 0.25)}</p>
+                        <p className="text-2xl font-bold text-amber-700 dark:text-amber-400 butcher-title">
+                          ₹{product.pricePerKg}/kg
+                        </p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          Starting from ₹{Math.round(product.pricePerKg * 0.25)}
+                        </p>
                       </div>
                     </div>
-                    <Button className="w-full bg-amber-600 hover:bg-amber-500 text-white rounded-full py-3 font-semibold transition-transform active:scale-95" onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }}>
-                      Select Weight
+                    
+                    <Button 
+                      className="w-full btn-premium rounded-full py-4 font-bold text-lg hover-lift shadow-lg" 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        setSelectedProduct(product); 
+                      }}
+                    >
+                      🛒 Select Weight
                     </Button>
                   </CardContent>
                 </Card>
@@ -416,137 +550,190 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* About - Light */}
-      <section id="about" className="py-16 bg-white/70">
+      {/* Enhanced About Section */}
+      <section id="about" className="py-20 bg-white/80 dark:bg-slate-800/80 wood-texture">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">Why Choose Mulghai Point?</h3>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
-                    <Award className="w-7 h-7 text-white" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="reveal-left">
+              <h3 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent butcher-title">
+                Why Choose Mulghai Point?
+              </h3>
+              <div className="space-y-8">
+                <div className="flex items-start space-x-6 hover-lift p-4 rounded-2xl">
+                  <div className="bg-gradient-to-br from-amber-400 to-rose-500 p-4 rounded-2xl shadow-lg float-1">
+                    <Award className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Premium Quality</h4>
-                    <p className="text-slate-600">Hand-selected from trusted farms, ensuring the highest quality and freshness for every cut.</p>
+                    <h4 className="text-2xl font-bold mb-3 butcher-title">Premium Quality</h4>
+                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                      Hand-selected from trusted farms, ensuring the highest quality and freshness for every cut with rigorous quality checks.
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
-                    <Truck className="w-7 h-7 text-white" />
+                
+                <div className="flex items-start space-x-6 hover-lift p-4 rounded-2xl">
+                  <div className="bg-gradient-to-br from-amber-400 to-rose-500 p-4 rounded-2xl shadow-lg float-2">
+                    <Truck className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Fast Delivery</h4>
-                    <p className="text-slate-600">Quick and reliable delivery to keep your meat fresh and your meals on schedule.</p>
+                    <h4 className="text-2xl font-bold mb-3 butcher-title">Fast Delivery</h4>
+                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                      Quick and reliable delivery within 60 minutes to keep your meat fresh and your meals on schedule.
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
-                    <MapPin className="w-7 h-7 text-white" />
+                
+                <div className="flex items-start space-x-6 hover-lift p-4 rounded-2xl">
+                  <div className="bg-gradient-to-br from-amber-400 to-rose-500 p-4 rounded-2xl shadow-lg float-3">
+                    <MapPin className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Local & Fresh</h4>
-                    <p className="text-slate-600">Sourced from local farms, supporting our community while ensuring maximum freshness.</p>
+                    <h4 className="text-2xl font-bold mb-3 butcher-title">Local & Fresh</h4>
+                    <p className="text-slate-600 dark:text-slate-300 text-lg premium-text">
+                      Sourced from local farms, supporting our community while ensuring maximum freshness and sustainability.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80" alt="Fresh meat display" className="relative rounded-3xl shadow-lg w-full" />
+            
+            <div className="relative reveal-right">
+              <div className="vintage-frame rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1584048603508-4b31894439a9" 
+                  alt="Classic butcher shop interior" 
+                  className="w-full rounded-3xl hover:scale-105 transition-transform duration-700" 
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer - Light */}
-      <footer id="contact" className="bg-white text-slate-800 py-12 border-t border-amber-100">
+      {/* Enhanced Footer */}
+      <footer id="contact" className="bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-200 py-16 border-t border-amber-100 dark:border-slate-700 wood-texture">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="bg-gradient-to-br from-amber-400 to-rose-400 p-3 rounded-2xl shadow-sm">
-                  <Award className="w-7 h-7 text-white" />
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="bg-gradient-to-br from-amber-400 to-rose-500 p-4 rounded-3xl shadow-lg logo-glow">
+                  <Drumstick className="w-8 h-8 text-white" />
                 </div>
-                <h4 className="text-2xl font-bold bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent">Mulghai Point</h4>
+                <h4 className="text-3xl font-bold bg-gradient-to-r from-amber-700 to-rose-700 bg-clip-text text-transparent butcher-title">
+                  Mulghai Point
+                </h4>
               </div>
-              <p className="text-slate-600 mb-4">Your trusted partner for premium fresh meat delivery.</p>
-              <div className="flex items-center space-x-2 bg-amber-50 rounded-full px-4 py-2 border border-amber-100">
-                <Phone className="w-4 h-4 text-amber-700" />
-                <span className="text-amber-700 font-medium">7986955634</span>
+              <p className="text-slate-600 dark:text-slate-300 mb-6 text-lg premium-text">
+                Your trusted partner for premium fresh meat delivery with guaranteed quality and hygiene.
+              </p>
+              <div className="flex items-center space-x-3 bg-amber-50 dark:bg-slate-800 rounded-full px-6 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                <Phone className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+                <span className="text-amber-700 dark:text-amber-400 font-bold text-lg">7986955634</span>
               </div>
             </div>
+            
             <div>
-              <h5 className="text-lg font-semibold mb-4 text-amber-800">Quick Links</h5>
-              <ul className="space-y-2">
-                <li><button onClick={() => scrollToSection('products')} className="text-slate-700 hover:text-amber-700">Products</button></li>
-                <li><button onClick={() => scrollToSection('about')} className="text-slate-700 hover:text-amber-700">About Us</button></li>
-                <li><button onClick={() => scrollToSection('contact')} className="text-slate-700 hover:text-amber-700">Contact</button></li>
+              <h5 className="text-xl font-bold mb-6 text-amber-800 dark:text-amber-400 butcher-title">Quick Links</h5>
+              <ul className="space-y-3">
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('products')} 
+                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                  >
+                    🥩 Products
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('about')} 
+                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                  >
+                    ℹ️ About Us
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('contact')} 
+                    className="text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400 text-lg premium-text hover-lift inline-block"
+                  >
+                    📞 Contact
+                  </button>
+                </li>
               </ul>
             </div>
+            
             <div>
-              <h5 className="text-lg font-semibold mb-4 text-amber-800">Delivery Areas</h5>
-              <ul className="space-y-2 text-slate-700">
-                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">LPU Campus & Vicinity</li>
-                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">Phagwara City</li>
-                <li className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">Domeli & Surrounding Areas</li>
+              <h5 className="text-xl font-bold mb-6 text-amber-800 dark:text-amber-400 butcher-title">Delivery Areas</h5>
+              <ul className="space-y-3">
+                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                  📍 LPU Campus & Vicinity
+                </li>
+                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                  🏘️ Phagwara City
+                </li>
+                <li className="bg-amber-50 dark:bg-slate-800 rounded-xl px-4 py-3 border border-amber-100 dark:border-slate-600 hover-lift">
+                  🌾 Domeli & Surrounding Areas
+                </li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-amber-100 mt-8 pt-6 text-center">
-            <p className="text-slate-500">© 2024 Mulghai Point. All rights reserved.</p>
+          
+          <div className="border-t border-amber-100 dark:border-slate-700 mt-12 pt-8 text-center">
+            <p className="text-slate-500 dark:text-slate-400 text-lg premium-text">
+              © 2024 Mulghai Point. All rights reserved. 🥩 Fresh • Premium • Hygienic Quality 🐓
+            </p>
           </div>
         </div>
       </footer>
 
-      {/* Mobile Bottom Navigation - Light, with Cart */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-100 z-30" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}>
-        <div className="flex justify-around py-2">
-          <button onClick={() => { scrollToSection('home'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'home' ? 'text-amber-700' : 'text-slate-500'}`}>
-            <Home className="w-5 h-5" />
-            <span className="text-[11px]">Home</span>
-          </button>
-
-          <button onClick={() => { scrollToSection('products'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'products' ? 'text-amber-700' : 'text-slate-500'}`}>
-            <Package className="w-5 h-5" />
-            <span className="text-[11px]">Products</span>
-          </button>
-
-          <button onClick={() => { setShowSuggestions(false); setActiveSection('cart'); setIsCartOpen(true); }} className={`relative flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'cart' ? 'text-amber-700' : 'text-slate-500'}`}>
-            <div className="relative">
-              <ShoppingCart className="w-6 h-6" />
-              {getCartItemCount() > 0 && (
-                <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">{getCartItemCount()}</span>
-              )}
-            </div>
-            <span className="text-[11px]">Cart</span>
-          </button>
-
-          <button onClick={() => { scrollToSection('about'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'about' ? 'text-amber-700' : 'text-slate-500'}`}>
-            <Info className="w-5 h-5" />
-            <span className="text-[11px]">About</span>
-          </button>
-
-          <button onClick={() => { scrollToSection('contact'); }} className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-colors ${activeSection === 'contact' ? 'text-amber-700' : 'text-slate-500'}`}>
-            <Users className="w-5 h-5" />
-            <span className="text-[11px]">Contact</span>
-          </button>
-        </div>
-      </div>
-
       {/* Modals */}
       {selectedProduct && (
-        <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={addToCart} />
+        <ProductModal 
+          product={selectedProduct} 
+          onClose={() => setSelectedProduct(null)} 
+          onAddToCart={addToCart} 
+        />
       )}
 
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onUpdateQuantity={updateCartQuantity} onCheckout={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }} getCartTotal={getCartTotal} />
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        cart={cart} 
+        onUpdateQuantity={updateCartQuantity} 
+        onCheckout={() => { 
+          setIsCartOpen(false); 
+          setIsCheckoutOpen(true); 
+        }} 
+        getCartTotal={getCartTotal} 
+      />
 
-      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} cart={cart} cartTotal={getCartTotal()} serviceablePincodes={serviceablePincodes} onOrderComplete={() => { setCart([]); setIsCheckoutOpen(false); toast({ title: 'Order Sent!', description: "Your order has been sent via WhatsApp. We'll confirm shortly." }); }} />
+      <CheckoutModal 
+        isOpen={isCheckoutOpen} 
+        onClose={() => setIsCheckoutOpen(false)} 
+        cart={cart} 
+        cartTotal={getCartTotal()} 
+        serviceablePincodes={serviceablePincodes} 
+        onOrderComplete={() => { 
+          setCart([]); 
+          setIsCheckoutOpen(false); 
+          toast({ 
+            title: '🎉 Order Sent!', 
+            description: "Your order has been sent via WhatsApp with emojis. We'll confirm shortly! 📱" 
+          }); 
+        }} 
+      />
 
-      {/* WhatsApp Float Button */}
-      <div className="fixed bottom-24 md:bottom-6 right-6 z-40">
-        <Button size="lg" className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-md p-4" onClick={() => window.open('https://wa.me/917986955634?text=Hi%20Mulghai%20Point,%20I%20need%20help%20with%20my%20order!', '_blank')}>
-          <Phone className="w-6 h-6" />
+      {/* Enhanced WhatsApp Float Button */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <Button 
+          size="lg" 
+          className="rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-2xl p-6 hover-lift hover-glow" 
+          onClick={() => window.open(`https://wa.me/917986955634?text=${encodeURIComponent(whatsappTemplates.quickOrder)}`, '_blank')}
+        >
+          <div className="flex items-center gap-2">
+            <Phone className="w-6 h-6" />
+            <span className="text-lg">💬</span>
+          </div>
         </Button>
       </div>
     </div>
