@@ -6,6 +6,7 @@ import { Textarea } from './ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { useToast } from '../hooks/use-toast';
+import { whatsappTemplates } from '../data/mockData';
 
 const CheckoutModal = ({ isOpen, onClose, cart, cartTotal, serviceablePincodes, onOrderComplete }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', address: '', pincode: '', instructions: '' });
